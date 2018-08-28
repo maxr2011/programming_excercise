@@ -134,6 +134,8 @@ public class BasicCSVReader {
 			//																					   .summarizingDouble(
 			//																							   Double::doubleValue)));
 
+			// Ansatz: Vorher Comparator Objekt erstellen und dann in die Methode maxBy mit übergeben
+
 		} catch (Exception e) {
 			System.out.println("Error in CsvFileReader !!!");
 			e.printStackTrace();
