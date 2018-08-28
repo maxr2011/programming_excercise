@@ -10,7 +10,12 @@ public class Country {
         this.weight = w;
     }
 
-    public String getName(){return name;}
-    public Double getWeight(){return weight;}
+    public String getName(){
+        return name;
+    }
+
+    public Double getWeight(){
+        return weight;
+    }
 
 }
