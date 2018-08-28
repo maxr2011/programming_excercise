@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 public class BasicCSVReader {
 
+	//CSV file path
 	private static final String SAMPLE_CSV_FILE_PATH = "exercise.csv";
 
 	//CSV file header
