@@ -72,10 +72,10 @@ public class Ringchart {
     public static void main(String[] args) {
 
         /** TODO
-        // CSV einlesen
-        // Datenbank schreiben
-        // Datenbank lesen
-        // Als Chart exportieren -> PDF
+        * CSV einlesen
+        * Datenbank schreiben
+        * Datenbank lesen
+        * Als Chart exportieren -> PDF
         */
 
         ArrayList<Company> companies = readCsvFile(SAMPLE_CSV_FILE_PATH);
