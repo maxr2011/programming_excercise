@@ -100,15 +100,22 @@ public class Piechart extends ApplicationFrame {
 		plot.setLabelGenerator(null);
 
 		// Sektionen färben
-		plot.setSectionPaint("Deutschland", new Color(0x7ED096));
-		plot.setSectionPaint("Frankreich", new Color(0x299D87));
-		plot.setSectionPaint("Spanien", new Color(0x1990D4));
-		plot.setSectionPaint("Niederlande", new Color(0x5F5519));
-		plot.setSectionPaint("Belgien", new Color(0x165A3F));
-		plot.setSectionPaint("Italien", new Color(0x867D19));
-		plot.setSectionPaint("Großbritannien", new Color(0xDFC70D));
-		plot.setSectionPaint("Kanada", new Color(0xEEA615));
-		plot.setSectionPaint("Liquidität/Terminkontrakte", new Color(0xF5C933));
+		ArrayList<Color> colorlist = new ArrayList<>();
+		colorlist.add(new Color(0x7ED096));
+		colorlist.add(new Color(0x299D87));
+		colorlist.add(new Color(0x1990D4));
+		colorlist.add(new Color(0x5F5519));
+		colorlist.add(new Color(0x165A3F));
+		colorlist.add(new Color(0x867D19));
+		colorlist.add(new Color(0xDFC70D));
+		colorlist.add(new Color(0xEEA615));
+		colorlist.add(new Color(0xF5C933));
+
+		int j = 0;
+
+		for (Country c : countries) {
+			plot.setSectionPaint(c.getName(), colorlist.get(j++));
+		}
 
 		plot.setSimpleLabels(true);
 

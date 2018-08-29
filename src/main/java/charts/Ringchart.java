@@ -35,7 +35,7 @@ public class Ringchart extends ApplicationFrame {
 
 	//Variablen
 
-	public static ArrayList<Company> companies;
+	public static List<Company> companies;
 
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 400;
@@ -72,7 +72,7 @@ public class Ringchart extends ApplicationFrame {
 	 *
 	 * @return a sample dataset.
 	 */
-	private static PieDataset createDataset(ArrayList<Company> cl) {
+	private static PieDataset createDataset(List<Company> cl) {
 		DefaultPieDataset dataset = new DefaultPieDataset();
 
 		for (Company c : cl) {
@@ -118,9 +118,9 @@ public class Ringchart extends ApplicationFrame {
 		plot.setLabelGenerator(null);
 
 		// Sektionen färben
-
 		ArrayList<Color> colorlist = new ArrayList<>();
 
+		// Farbliste
 		colorlist.add(new Color(0x7CCB92));
 		colorlist.add(new Color(0x299B87));
 		colorlist.add(new Color(0x1990D2));
@@ -134,7 +134,14 @@ public class Ringchart extends ApplicationFrame {
 			plot.setSectionPaint(c.getSecurity(), colorlist.get(k++));
 		}
 
-		plot.setSectionOutlinesVisible(false);
+		// Sektion Outline unsichtbar machen
+		//plot.setSectionOutlinesVisible(false);
+
+		// Sektion Outline färben
+		plot.setSectionOutlinePaint(new Color(0x808080));
+
+		// Seperator Linie unsichtbar machen
+		plot.setSeparatorsVisible(false);
 
 		plot.setLabelGap(0.02);
 
@@ -340,7 +347,7 @@ public class Ringchart extends ApplicationFrame {
 		ArrayList<Company> companiesDB = readFromDatabase();
 
 		// Globale Variable
-		companies = (ArrayList<Company>) companiesDB.stream().sorted(Comparator.comparing(Company::getWeighting).reversed()).collect(
+		companies =  companiesDB.stream().sorted(Comparator.comparing(Company::getWeighting).reversed()).collect(
 				Collectors.toList());
 
 		double hundred_check = 0.0;
