@@ -35,7 +35,7 @@ public class Ringchart extends ApplicationFrame {
 
 	public static ArrayList<Company> companies;
 
-	public static final int WIDTH = 900;
+	public static final int WIDTH = 650;
 	public static final int HEIGHT = 400;
 
 	//Datenbankanbindung
@@ -93,13 +93,36 @@ public class Ringchart extends ApplicationFrame {
 				true,               // include legend
 				true, false);
 
+		// Ringplot
 		RingPlot plot = (RingPlot) chart.getPlot();
+
+		// Schriftart ändern
 		plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
 		plot.setNoDataMessage("No data available");
+
 		plot.setSectionDepth(0.35);
 		plot.setCircular(false);
+
+		// Hintergrund (entfernt den grauen Standard Hintergrund)
 		plot.setBackgroundPaint(Color.white);
 		plot.setOutlinePaint(Color.white);
+
+		// Entfernt den Shatten
+		plot.setShadowPaint(Color.white);
+		plot.setShadowXOffset(0);
+		plot.setShadowYOffset(0);
+
+		// Entfernt die Default Labels
+		plot.setLabelGenerator(null);
+
+		// Sektionen färben
+		plot.setSectionPaint("Apple", new Color(0x7CCB92));
+		plot.setSectionPaint(" L'Oreal Skincare and Health Ltd.", new Color(0x299B87));
+		plot.setSectionPaint("Volkswagen AG'); drop table ring_chart;--", new Color(0x1990D2));
+		plot.setSectionPaint("/\\/\\icrosoft Computers and ASCII Art Inc. ", new Color(0x395B85));
+		plot.setSectionPaint("American Airlines Inc.", new Color(0x5F5519));
+		plot.setSectionPaint("München Mag Dich T-Shirts GmbH", new Color(0x165A3F));
+
 		plot.setLabelGap(0.02);
 
 		chart.getLegend().setPosition(RectangleEdge.RIGHT);

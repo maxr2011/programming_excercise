@@ -17,7 +17,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.block.BlockBorder;
-import org.jfree.chart.plot.Plot;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
@@ -84,15 +84,39 @@ public class Piechart extends ApplicationFrame {
 				true,             // include legend
 				true, false);
 
-		Plot plot = chart.getPlot();
+		// Pieplot
+		PiePlot plot = (PiePlot) chart.getPlot();
+
+		// Hintergrund weis (entfernt den grauen Standard Hintergrund)
 		plot.setBackgroundPaint(Color.white);
 		plot.setOutlinePaint(Color.white);
 
+		// Entfernt den Shatten
+		plot.setShadowPaint(Color.white);
+		plot.setShadowXOffset(0);
+		plot.setShadowYOffset(0);
+
+		// Entfernt die Default Labels
+		plot.setLabelGenerator(null);
+
+		// Sektionen färben
+		plot.setSectionPaint("Deutschland", new Color(0x7ED096));
+		plot.setSectionPaint("Frankreich", new Color(0x299D87));
+		plot.setSectionPaint("Spanien", new Color(0x1990D4));
+		plot.setSectionPaint("Niederlande", new Color(0x5F5519));
+		plot.setSectionPaint("Belgien", new Color(0x165A3F));
+		plot.setSectionPaint("Italien", new Color(0x867D19));
+		plot.setSectionPaint("Großbritannien", new Color(0xDFC70D));
+		plot.setSectionPaint("Kanada", new Color(0xEEA615));
+		plot.setSectionPaint("Liquidität/Terminkontrakte", new Color(0xF5C933));
+
+		// Sektionen Outline
+		plot.setSectionOutlinePaint(Color.white);
+
+		// Legende
 		chart.getLegend().setFrame(BlockBorder.NONE);
 		chart.getLegend().setItemLabelPadding(new RectangleInsets(5.0, 2.0, 10.0, 900.0));
 		chart.getLegend().setPadding(new RectangleInsets(20.0, 20.0, 0.0, 0.0));
-
-
 
 		return chart;
 	}
