@@ -15,10 +15,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.Plot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.RefineryUtilities;
 
 import javax.swing.*;
@@ -33,6 +35,9 @@ public class Piechart extends ApplicationFrame {
 	//Variablen
 
 	public static ArrayList<Country> countries;
+
+	public static int HEIGHT = 750;
+	public static int WIDTH = 537;
 
 	//Datenbankanbindung
 	private static final String url = "jdbc:postgresql://localhost/exercise";
@@ -82,6 +87,10 @@ public class Piechart extends ApplicationFrame {
 		plot.setBackgroundPaint(Color.white);
 		plot.setOutlinePaint(Color.white);
 
+		chart.getLegend().setFrame(BlockBorder.NONE);
+		chart.getLegend().setItemLabelPadding(new RectangleInsets(5.0, 2.0, 10.0, 900.0));
+		chart.getLegend().setPadding(new RectangleInsets(20.0, 20.0, 0.0, 0.0));
+
 		return chart;
 	}
 
@@ -89,7 +98,7 @@ public class Piechart extends ApplicationFrame {
 		JFreeChart chart = createChart(createDataset(countries));
 
 		// PDF export
-		export(new File(PDF_FILE), chart, 900, 500);
+		export(new File(PDF_FILE), chart, WIDTH, HEIGHT);
 
 		return new ChartPanel(chart);
 	}
@@ -301,7 +310,7 @@ public class Piechart extends ApplicationFrame {
 
 		// Piechart erstellen
 		Piechart demo = new Piechart("Countries");
-		demo.setSize(560, 367);
+		demo.setSize(WIDTH, HEIGHT);
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
 

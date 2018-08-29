@@ -34,6 +34,9 @@ public class Ringchart extends ApplicationFrame {
 
 	public static ArrayList<Company> companies;
 
+	public static final int WIDTH = 900;
+	public static final int HEIGHT = 400;
+
 	//Datenbankanbindung
 	private static final String url = "jdbc:postgresql://localhost/exercise";
 	private static final String user = "mare";
@@ -57,7 +60,7 @@ public class Ringchart extends ApplicationFrame {
 	public Ringchart(String title) throws FileNotFoundException, DocumentException {
 		super(title);
 		JPanel panel = createDemoPanel();
-		panel.setPreferredSize(new java.awt.Dimension(900, 400));
+		panel.setPreferredSize(new java.awt.Dimension(WIDTH, HEIGHT));
 		setContentPane(panel);
 	}
 
@@ -113,7 +116,7 @@ public class Ringchart extends ApplicationFrame {
 		JFreeChart chart = createChart(createDataset(companies));
 
 		// Als PDF exportieren
-		export(new File(PDF_FILE), chart, 900, 400);
+		export(new File(PDF_FILE), chart, WIDTH, HEIGHT);
 
 		return new ChartPanel(chart);
 	}
