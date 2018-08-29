@@ -110,6 +110,11 @@ public class Piechart extends ApplicationFrame {
 		plot.setSectionPaint("Kanada", new Color(0xEEA615));
 		plot.setSectionPaint("Liquidität/Terminkontrakte", new Color(0xF5C933));
 
+		plot.setSimpleLabels(true);
+
+		// Sektion hervorheben
+		//plot.setExplodePercent("Deutschland", 0.3);
+
 		// Sektionen Outline
 		plot.setSectionOutlinePaint(Color.white);
 

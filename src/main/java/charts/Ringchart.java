@@ -27,7 +27,9 @@ import java.awt.*;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Ringchart extends ApplicationFrame {
 
@@ -35,7 +37,7 @@ public class Ringchart extends ApplicationFrame {
 
 	public static ArrayList<Company> companies;
 
-	public static final int WIDTH = 650;
+	public static final int WIDTH = 600;
 	public static final int HEIGHT = 400;
 
 	//Datenbankanbindung
@@ -116,14 +118,28 @@ public class Ringchart extends ApplicationFrame {
 		plot.setLabelGenerator(null);
 
 		// Sektionen färben
-		plot.setSectionPaint("Apple", new Color(0x7CCB92));
-		plot.setSectionPaint(" L'Oreal Skincare and Health Ltd.", new Color(0x299B87));
-		plot.setSectionPaint("Volkswagen AG'); drop table ring_chart;--", new Color(0x1990D2));
-		plot.setSectionPaint("/\\/\\icrosoft Computers and ASCII Art Inc. ", new Color(0x395B85));
-		plot.setSectionPaint("American Airlines Inc.", new Color(0x5F5519));
-		plot.setSectionPaint("München Mag Dich T-Shirts GmbH", new Color(0x165A3F));
+
+		ArrayList<Color> colorlist = new ArrayList<>();
+
+		colorlist.add(new Color(0x7CCB92));
+		colorlist.add(new Color(0x299B87));
+		colorlist.add(new Color(0x1990D2));
+		colorlist.add(new Color(0x395B85));
+		colorlist.add(new Color(0x5F5519));
+		colorlist.add(new Color(0x165A3F));
+
+		int k = 0;
+
+		for (Company c : companies) {
+			plot.setSectionPaint(c.getSecurity(), colorlist.get(k++));
+		}
+
+		plot.setSectionOutlinesVisible(false);
 
 		plot.setLabelGap(0.02);
+
+		// Tiefe des Graphens
+		plot.setSectionDepth(0.6);
 
 		chart.getLegend().setPosition(RectangleEdge.RIGHT);
 		chart.getLegend().setFrame(BlockBorder.NONE);
@@ -324,7 +340,8 @@ public class Ringchart extends ApplicationFrame {
 		ArrayList<Company> companiesDB = readFromDatabase();
 
 		// Globale Variable
-		companies = companiesDB;
+		companies = (ArrayList<Company>) companiesDB.stream().sorted(Comparator.comparing(Company::getWeighting).reversed()).collect(
+				Collectors.toList());
 
 		double hundred_check = 0.0;
 
