@@ -1,21 +1,37 @@
 package charts;
 
 import charts.objects.Country;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.DefaultFontMapper;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Rectangle;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Piechart {
+public class Piechart extends ApplicationFrame {
 
 	//Variablen
+
+	public static ArrayList<Country> countries;
 
 	//Datenbankanbindung
 	private static final String url = "jdbc:postgresql://localhost/exercise";
@@ -27,6 +43,45 @@ public class Piechart {
 
 	//Pfad zur xls Datei
 	public static String EXAMPLE_XLS_FILE = "piechart-data.xls";
+
+	//Pfad der PDF-Datei
+	public static String PDF_FILE = "piechart-example.pdf";
+
+	//Konstruktor
+	public Piechart( String title ) throws FileNotFoundException, DocumentException {
+		super( title );
+		setContentPane(createDemoPanel(countries));
+	}
+
+	private static PieDataset createDataset(ArrayList<Country> cl) {
+		DefaultPieDataset dataset = new DefaultPieDataset( );
+
+		for(Country c : cl){
+			dataset.setValue(c.getName(), c.getWeight());
+		}
+
+		return dataset;
+	}
+
+	private static JFreeChart createChart( PieDataset dataset ) {
+		JFreeChart chart = ChartFactory.createPieChart(
+				"Countries",   // chart title
+				dataset,          // data
+				true,             // include legend
+				true,
+				false);
+
+		return chart;
+	}
+
+	public static JPanel createDemoPanel(ArrayList<Country> cl) throws FileNotFoundException, DocumentException {
+		JFreeChart chart = createChart(createDataset(countries));
+
+		// PDF export
+		export(new File(PDF_FILE), chart, 560, 367);
+
+		return new ChartPanel( chart );
+	}
 
 	//Methode um xls Datei einzulesen
 	public static ArrayList<Country> readXLSFile() throws IOException {
@@ -178,8 +233,25 @@ public class Piechart {
 		return cl;
 	}
 
+	// Methode zum Exportieren als PDF
+	public static void export(File name, JFreeChart chart, int x, int y) throws FileNotFoundException, DocumentException {
+		Rectangle pagesize = new Rectangle( x, y );
+		Document document = new Document( pagesize, 50, 50, 50, 50 );
+		PdfWriter writer = PdfWriter.getInstance( document, new FileOutputStream(name) );
+		document.open();
+		PdfContentByte cb = writer.getDirectContent();
+		PdfTemplate tp = cb.createTemplate( x, y );
+		Graphics2D g2 = tp.createGraphics( x, y, new DefaultFontMapper() );
+
+		java.awt.Rectangle recta = new java.awt.Rectangle(x, y);
+		chart.draw(g2, recta);
+		g2.dispose();
+		cb.addTemplate(tp, 0, 0);
+		document.close();
+	}
+
 	// Mainmethode
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, FileNotFoundException, DocumentException {
 
 		/** TODO
 		 * XLS einlesen
@@ -197,9 +269,20 @@ public class Piechart {
 		// Daten von der Datenbank übergeben
 		ArrayList<Country> countriesDB = readFromDatabase();
 
+		// Ausgabe
 		for (Country c : countriesDB) {
 			System.out.println(c.getName() + " " + c.getWeight());
 		}
+
+		// Globale Variable
+		countries = countriesDB;
+
+		// Piechart erstellen
+		Piechart demo = new Piechart( "Countries" );
+		demo.setSize( 560 , 367 );
+		RefineryUtilities.centerFrameOnScreen( demo );
+		demo.setVisible( true );
+
 
 	}
 }
