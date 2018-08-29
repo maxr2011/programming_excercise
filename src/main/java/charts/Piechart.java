@@ -8,6 +8,7 @@ import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -36,8 +37,8 @@ public class Piechart extends ApplicationFrame {
 
 	public static ArrayList<Country> countries;
 
-	public static int HEIGHT = 750;
-	public static int WIDTH = 537;
+	public static final int HEIGHT = 750;
+	public static final int WIDTH = 537;
 
 	//Datenbankanbindung
 	private static final String url = "jdbc:postgresql://localhost/exercise";
@@ -81,7 +82,7 @@ public class Piechart extends ApplicationFrame {
 		JFreeChart chart = ChartFactory.createPieChart("ANTEIL AM FONDSVERMÖGEN",   // chart title
 				dataset,          // data
 				true,             // include legend
-				false, false);
+				true, false);
 
 		Plot plot = chart.getPlot();
 		plot.setBackgroundPaint(Color.white);
@@ -90,6 +91,8 @@ public class Piechart extends ApplicationFrame {
 		chart.getLegend().setFrame(BlockBorder.NONE);
 		chart.getLegend().setItemLabelPadding(new RectangleInsets(5.0, 2.0, 10.0, 900.0));
 		chart.getLegend().setPadding(new RectangleInsets(20.0, 20.0, 0.0, 0.0));
+
+
 
 		return chart;
 	}
@@ -313,6 +316,13 @@ public class Piechart extends ApplicationFrame {
 		demo.setSize(WIDTH, HEIGHT);
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);
+
+		// 2 PDFs zusammenfügen
+		PDFMergerUtility ut = new PDFMergerUtility();
+		ut.addSource(new File(PDF_FILE));
+		ut.addSource("ringchart-example.pdf");
+		ut.setDestinationFileName("piechart-ringchart-example.pdf");
+		ut.mergeDocuments();
 
 	}
 }

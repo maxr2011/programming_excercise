@@ -13,6 +13,7 @@ import org.apache.commons.csv.CSVRecord;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.RingPlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
@@ -102,6 +103,7 @@ public class Ringchart extends ApplicationFrame {
 		plot.setLabelGap(0.02);
 
 		chart.getLegend().setPosition(RectangleEdge.RIGHT);
+		chart.getLegend().setFrame(BlockBorder.NONE);
 
 		return chart;
 
