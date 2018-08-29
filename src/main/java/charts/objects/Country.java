@@ -22,6 +22,11 @@ public class Country {
         return weight;
     }
 
+    public boolean nameIsNull(){
+        if(this.name == null) return true;
+        return false;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
