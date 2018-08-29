@@ -22,6 +22,9 @@ public class Piechart {
 	private static final String user = "mare";
 	private static final String password = "toor";
 
+	//Tabellenname
+	private static final String table = "country_table";
+
 	//Pfad zur xls Datei
 	public static String EXAMPLE_XLS_FILE = "piechart-data.xls";
 
@@ -91,7 +94,7 @@ public class Piechart {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url, user, password);
-			System.out.println("Connected to the PostgreSQL server successfully.");
+			//System.out.println("Connected to the PostgreSQL server successfully.");
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
@@ -100,25 +103,92 @@ public class Piechart {
 	}
 
 	// Hilfsmethode für JDBC
-
-	// Methode um Liste an Countries in Datenbank zu schreiben (JDBC)
-	public static void writeDataToDatabase(ArrayList<Country> cl){
-
-		// Tabelle erstellen falls nicht existiert
-		String SQL = "CREATE TABLE IF NOT EXISTS CountryTable (name varchar(40), weight float(53));";
+	public static void minimal_query(String SQL) {
 
 		try(
-			Connection testconn = connect();
-			Statement stmt = testconn.createStatement();
-			ResultSet rs = stmt.executeQuery(SQL)
+				Connection testconn = connect();
+				Statement stmt = testconn.createStatement();
+				ResultSet rs = stmt.executeQuery(SQL)
 		){
 			// nothing to do
 		} catch (SQLException e) {
 			// nothing to do
 		}
 
+	}
 
+	// Methode um ein Country hinzuzufügen
+	public static void insertCountry(Country c){
 
+		String insertSQL = "INSERT INTO "+table+"(name, weight) "
+				+ "VALUES (?,?)";
+
+		long id = 0;
+
+		try(
+				Connection conn = connect();
+				PreparedStatement pstmt = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
+		){
+			pstmt.setString(1, c.getName());
+			pstmt.setDouble(2, c.getWeight());
+
+			int affectedRows = pstmt.executeUpdate();
+
+			if(affectedRows > 0){
+
+				try(ResultSet rs = pstmt.getGeneratedKeys()) {
+
+				}
+
+			}
+
+		} catch (SQLException e){
+			e.printStackTrace();
+		}
+
+	}
+
+	// Methode um Liste an Countries in Datenbank zu schreiben (JDBC)
+	public static void writeDataToDatabase(ArrayList<Country> cl){
+
+		// Tabelle erstellen falls nicht existiert
+		String createSQL = "CREATE TABLE IF NOT EXISTS "+table+" (name varchar(40), weight float(53));";
+		minimal_query(createSQL);
+
+		// Tabelle leeren
+		String deleteSQL = "DELETE FROM "+table+";";
+		minimal_query(deleteSQL);
+
+		// Country Liste in Datenbanktabelle schreiben
+		for(Country c : cl){
+			insertCountry(c);
+		}
+
+	}
+
+	// Methode um Liste an Countries auszulesen
+	public static ArrayList<Country> readFromDatabase(){
+
+		ArrayList<Country> cl = new ArrayList<Country>();
+
+		// Daten auslesen
+		String selectSQL = "SELECT * FROM "+table+";";
+
+		try(
+			Connection conn = connect();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(selectSQL)
+		){
+			while(rs.next()){
+
+				cl.add(new Country(rs.getString("name"), rs.getDouble("weight")));
+
+			}
+		} catch (SQLException e){
+			e.printStackTrace();
+		}
+
+		return cl;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -131,22 +201,18 @@ public class Piechart {
 		 */
 
 		// XLS einlesen -> Countries
-		ArrayList<Country> countries = readXLSFile();
-
-		for(Country c : countries){
-			System.out.println(c.getName() + " - " + c.getWeight());
-		}
-
-		System.out.println();
+		ArrayList<Country> countriesXLS = readXLSFile();
 
 		// Daten in die Datenbank schrieben
-		writeDataToDatabase(countries);
+		writeDataToDatabase(countriesXLS);
 
+		// Daten von der Datenbank übergeben
+		ArrayList<Country> countriesDB = readFromDatabase();
 
+		for(Country c : countriesDB){
+			System.out.println(c.getName() + " " +c.getWeight());
+		}
 
-		/** TODO
-		 * 1. und letzte Zeile fixen
-		 */
 
 	}
 }
