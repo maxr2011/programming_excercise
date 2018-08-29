@@ -1,20 +1,37 @@
 package charts;
 
 import charts.objects.Company;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.DefaultFontMapper;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.RingPlot;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
 import streams.Fund;
 
-import java.io.FileReader;
-import java.io.IOException;
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ringchart {
+public class Ringchart extends ApplicationFrame {
 
 	//Variablen
+
+	public static ArrayList<Company> companies;
 
 	//Datenbankanbindung
 	private static final String url = "jdbc:postgresql://localhost/exercise";
@@ -30,6 +47,72 @@ public class Ringchart {
 	//CSV file header
 	private static final String[] FILE_HEADER_MAPPING = {"Date", "Security", "Weighting"};
 
+	//GIF file name
+	private static final String GIF_FILE = "ringchart-example.gif";
+
+	//PDF file name
+	private static final String PDF_FILE = "ringchart-example.pdf";
+
+	public Ringchart(String title) throws FileNotFoundException, DocumentException {
+		super(title);
+		JPanel panel = createDemoPanel();
+		panel.setPreferredSize(new java.awt.Dimension(500, 270));
+		setContentPane(panel);
+	}
+
+	/**
+	 * Creates a sample dataset.
+	 *
+	 * @return a sample dataset.
+	 */
+	private static PieDataset createDataset(ArrayList<Company> cl) {
+		DefaultPieDataset dataset = new DefaultPieDataset();
+
+		for (Company c : cl) {
+			dataset.setValue(c.getSecurity(), c.getWeighting());
+		}
+
+		return dataset;
+	}
+
+	/**
+	 * Creates a chart.
+	 *
+	 * @param dataset the dataset.
+	 * @return a chart.
+	 */
+	private static JFreeChart createChart(PieDataset dataset) {
+
+		JFreeChart chart = ChartFactory.createRingChart("Ring Chart Demo 1",  // chart title
+				dataset,             // data
+				false,               // include legend
+				true, false);
+
+		RingPlot plot = (RingPlot) chart.getPlot();
+		plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
+		plot.setNoDataMessage("No data available");
+		plot.setSectionDepth(0.35);
+		plot.setCircular(false);
+		plot.setLabelGap(0.02);
+		return chart;
+
+	}
+
+	/**
+	 * Creates a panel for the demo (used by SuperDemo.java).
+	 *
+	 * @return A panel.
+	 */
+	public static JPanel createDemoPanel() throws FileNotFoundException, DocumentException {
+		JFreeChart chart = createChart(createDataset(companies));
+
+		// Als PDF exportieren
+		export(new File(PDF_FILE), chart, 500, 270);
+
+		return new ChartPanel(chart);
+	}
+
+	//CSV Datei einlesen
 	public static ArrayList<Company> readCsvFile(String fileName) {
 
 		ArrayList<Company> companies = new ArrayList<Company>();
@@ -169,8 +252,26 @@ public class Ringchart {
 		return cl;
 	}
 
+	// Methode zum Exportieren als PDF
+	public static void export(File name, JFreeChart chart, int x, int y)
+			throws FileNotFoundException, DocumentException {
+		com.itextpdf.text.Rectangle pagesize = new com.itextpdf.text.Rectangle(x, y);
+		Document document = new Document(pagesize, 50, 50, 50, 50);
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(name));
+		document.open();
+		PdfContentByte cb = writer.getDirectContent();
+		PdfTemplate tp = cb.createTemplate(x, y);
+		Graphics2D g2 = tp.createGraphics(x, y, new DefaultFontMapper());
+
+		java.awt.Rectangle recta = new java.awt.Rectangle(x, y);
+		chart.draw(g2, recta);
+		g2.dispose();
+		cb.addTemplate(tp, 0, 0);
+		document.close();
+	}
+
 	// Mainmethode
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, FileNotFoundException, DocumentException {
 
 		/** TODO
 		 * CSV einlesen
@@ -188,9 +289,28 @@ public class Ringchart {
 		// Daten von der Datenbank übergeben
 		ArrayList<Company> companiesDB = readFromDatabase();
 
-		for (Company c : companiesDB) {
+		// Globale Variable
+		companies = companiesDB;
+
+		double hundred_check = 0.0;
+
+		for (Company c : companies) {
 			System.out.println(c.getSecurity());
+			hundred_check += c.getWeighting();
 		}
+
+		System.out.println(hundred_check);
+
+		// check if everything adds up to 100%
+		if(hundred_check == 1.00){
+			System.out.println("sum = 100% : "+true);
+		}
+
+		// Ringchart erstellen
+		Ringchart demo = new Ringchart("JFreeChart: RingChartDemo1.java");
+		demo.pack();
+		RefineryUtilities.centerFrameOnScreen(demo);
+		demo.setVisible(true);
 
 	}
 

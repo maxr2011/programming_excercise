@@ -3,11 +3,11 @@ package charts;
 import charts.objects.Country;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.Rectangle;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -44,32 +44,33 @@ public class Piechart extends ApplicationFrame {
 	//Pfad zur xls Datei
 	public static String EXAMPLE_XLS_FILE = "piechart-data.xls";
 
+	//Pfad der PNG-Datei
+	public static String PNG_FILE = "piechart-example.png";
+
 	//Pfad der PDF-Datei
 	public static String PDF_FILE = "piechart-example.pdf";
 
 	//Konstruktor
-	public Piechart( String title ) throws FileNotFoundException, DocumentException {
-		super( title );
+	public Piechart(String title) throws FileNotFoundException, DocumentException {
+		super(title);
 		setContentPane(createDemoPanel(countries));
 	}
 
 	private static PieDataset createDataset(ArrayList<Country> cl) {
-		DefaultPieDataset dataset = new DefaultPieDataset( );
+		DefaultPieDataset dataset = new DefaultPieDataset();
 
-		for(Country c : cl){
+		for (Country c : cl) {
 			dataset.setValue(c.getName(), c.getWeight());
 		}
 
 		return dataset;
 	}
 
-	private static JFreeChart createChart( PieDataset dataset ) {
-		JFreeChart chart = ChartFactory.createPieChart(
-				"Countries",   // chart title
+	private static JFreeChart createChart(PieDataset dataset) {
+		JFreeChart chart = ChartFactory.createPieChart("Countries",   // chart title
 				dataset,          // data
 				true,             // include legend
-				true,
-				false);
+				true, false);
 
 		return chart;
 	}
@@ -80,7 +81,7 @@ public class Piechart extends ApplicationFrame {
 		// PDF export
 		export(new File(PDF_FILE), chart, 560, 367);
 
-		return new ChartPanel( chart );
+		return new ChartPanel(chart);
 	}
 
 	//Methode um xls Datei einzulesen
@@ -234,14 +235,15 @@ public class Piechart extends ApplicationFrame {
 	}
 
 	// Methode zum Exportieren als PDF
-	public static void export(File name, JFreeChart chart, int x, int y) throws FileNotFoundException, DocumentException {
-		Rectangle pagesize = new Rectangle( x, y );
-		Document document = new Document( pagesize, 50, 50, 50, 50 );
-		PdfWriter writer = PdfWriter.getInstance( document, new FileOutputStream(name) );
+	public static void export(File name, JFreeChart chart, int x, int y)
+			throws FileNotFoundException, DocumentException {
+		Rectangle pagesize = new Rectangle(x, y);
+		Document document = new Document(pagesize, 50, 50, 50, 50);
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(name));
 		document.open();
 		PdfContentByte cb = writer.getDirectContent();
-		PdfTemplate tp = cb.createTemplate( x, y );
-		Graphics2D g2 = tp.createGraphics( x, y, new DefaultFontMapper() );
+		PdfTemplate tp = cb.createTemplate(x, y);
+		Graphics2D g2 = tp.createGraphics(x, y, new DefaultFontMapper());
 
 		java.awt.Rectangle recta = new java.awt.Rectangle(x, y);
 		chart.draw(g2, recta);
@@ -269,20 +271,29 @@ public class Piechart extends ApplicationFrame {
 		// Daten von der Datenbank übergeben
 		ArrayList<Country> countriesDB = readFromDatabase();
 
-		// Ausgabe
-		for (Country c : countriesDB) {
-			System.out.println(c.getName() + " " + c.getWeight());
-		}
-
 		// Globale Variable
 		countries = countriesDB;
 
-		// Piechart erstellen
-		Piechart demo = new Piechart( "Countries" );
-		demo.setSize( 560 , 367 );
-		RefineryUtilities.centerFrameOnScreen( demo );
-		demo.setVisible( true );
+		double hundred_check = 0.0;
 
+		// Ausgabe
+		for (Country c : countries) {
+			System.out.println(c.getName() + " " + c.getWeight());
+			hundred_check += c.getWeight();
+		}
+
+		System.out.println(hundred_check);
+
+		// Check if everything adds up to 100%
+		if(hundred_check > 99 && hundred_check < 101){
+			System.out.println("sum = 100% : "+true);
+		}
+
+		// Piechart erstellen
+		Piechart demo = new Piechart("Countries");
+		demo.setSize(560, 367);
+		RefineryUtilities.centerFrameOnScreen(demo);
+		demo.setVisible(true);
 
 	}
 }
