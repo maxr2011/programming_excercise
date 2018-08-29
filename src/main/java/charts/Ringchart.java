@@ -17,6 +17,7 @@ import org.jfree.chart.plot.RingPlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RefineryUtilities;
 import streams.Fund;
 
@@ -56,7 +57,7 @@ public class Ringchart extends ApplicationFrame {
 	public Ringchart(String title) throws FileNotFoundException, DocumentException {
 		super(title);
 		JPanel panel = createDemoPanel();
-		panel.setPreferredSize(new java.awt.Dimension(500, 270));
+		panel.setPreferredSize(new java.awt.Dimension(900, 400));
 		setContentPane(panel);
 	}
 
@@ -83,9 +84,9 @@ public class Ringchart extends ApplicationFrame {
 	 */
 	private static JFreeChart createChart(PieDataset dataset) {
 
-		JFreeChart chart = ChartFactory.createRingChart("Ring Chart Demo 1",  // chart title
+		JFreeChart chart = ChartFactory.createRingChart("",  // chart title
 				dataset,             // data
-				false,               // include legend
+				true,               // include legend
 				true, false);
 
 		RingPlot plot = (RingPlot) chart.getPlot();
@@ -93,7 +94,12 @@ public class Ringchart extends ApplicationFrame {
 		plot.setNoDataMessage("No data available");
 		plot.setSectionDepth(0.35);
 		plot.setCircular(false);
+		plot.setBackgroundPaint(Color.white);
+		plot.setOutlinePaint(Color.white);
 		plot.setLabelGap(0.02);
+
+		chart.getLegend().setPosition(RectangleEdge.RIGHT);
+
 		return chart;
 
 	}
@@ -107,7 +113,7 @@ public class Ringchart extends ApplicationFrame {
 		JFreeChart chart = createChart(createDataset(companies));
 
 		// Als PDF exportieren
-		export(new File(PDF_FILE), chart, 500, 270);
+		export(new File(PDF_FILE), chart, 900, 400);
 
 		return new ChartPanel(chart);
 	}
@@ -302,12 +308,12 @@ public class Ringchart extends ApplicationFrame {
 		System.out.println(hundred_check);
 
 		// check if everything adds up to 100%
-		if(hundred_check == 1.00){
-			System.out.println("sum = 100% : "+true);
+		if (hundred_check == 1.00) {
+			System.out.println("sum = 100% : " + true);
 		}
 
 		// Ringchart erstellen
-		Ringchart demo = new Ringchart("JFreeChart: RingChartDemo1.java");
+		Ringchart demo = new Ringchart("Companies");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);

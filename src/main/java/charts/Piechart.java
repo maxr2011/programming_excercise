@@ -15,6 +15,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.Plot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
@@ -53,7 +54,12 @@ public class Piechart extends ApplicationFrame {
 	//Konstruktor
 	public Piechart(String title) throws FileNotFoundException, DocumentException {
 		super(title);
-		setContentPane(createDemoPanel(countries));
+
+		JPanel cp = createDemoPanel(countries);
+
+		//cp.setBackground(Color.WHITE);
+
+		setContentPane(cp);
 	}
 
 	private static PieDataset createDataset(ArrayList<Country> cl) {
@@ -67,10 +73,14 @@ public class Piechart extends ApplicationFrame {
 	}
 
 	private static JFreeChart createChart(PieDataset dataset) {
-		JFreeChart chart = ChartFactory.createPieChart("Countries",   // chart title
+		JFreeChart chart = ChartFactory.createPieChart("ANTEIL AM FONDSVERMÖGEN",   // chart title
 				dataset,          // data
 				true,             // include legend
-				true, false);
+				false, false);
+
+		Plot plot = chart.getPlot();
+		plot.setBackgroundPaint(Color.white);
+		plot.setOutlinePaint(Color.white);
 
 		return chart;
 	}
@@ -79,7 +89,7 @@ public class Piechart extends ApplicationFrame {
 		JFreeChart chart = createChart(createDataset(countries));
 
 		// PDF export
-		export(new File(PDF_FILE), chart, 560, 367);
+		export(new File(PDF_FILE), chart, 900, 500);
 
 		return new ChartPanel(chart);
 	}
@@ -285,8 +295,8 @@ public class Piechart extends ApplicationFrame {
 		System.out.println(hundred_check);
 
 		// Check if everything adds up to 100%
-		if(hundred_check > 99 && hundred_check < 101){
-			System.out.println("sum = 100% : "+true);
+		if (hundred_check > 99 && hundred_check < 101) {
+			System.out.println("sum = 100% : " + true);
 		}
 
 		// Piechart erstellen
