@@ -1,11 +1,13 @@
 package database;
 
 import exercise.chart.Piechart;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Component("JDBC")
 public class JDBC {
 
     // Datenbankverbindung

@@ -1,8 +1,5 @@
 package exercise.objects;
 
-import org.springframework.stereotype.Component;
-
-@Component("Country")
 public class Country {
 
 	private String name;
