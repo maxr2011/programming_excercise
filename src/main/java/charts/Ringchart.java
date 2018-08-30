@@ -12,6 +12,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.RingPlot;
@@ -22,8 +23,10 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RefineryUtilities;
 import streams.Fund;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -163,8 +166,11 @@ public class Ringchart extends ApplicationFrame {
 	public static JPanel createDemoPanel() throws FileNotFoundException, DocumentException {
 		JFreeChart chart = createChart(createDataset(companies));
 
+		// Als GIF exportieren
+		exportGIF(new File(GIF_FILE), chart, WIDTH, HEIGHT);
+
 		// Als PDF exportieren
-		export(new File(PDF_FILE), chart, WIDTH, HEIGHT);
+		exportPDF(new File(PDF_FILE), chart, WIDTH, HEIGHT);
 
 		return new ChartPanel(chart);
 	}
@@ -309,11 +315,40 @@ public class Ringchart extends ApplicationFrame {
 		return cl;
 	}
 
+	// Methode zum Exportieren als PNG
+	public static void exportPNG(File name, JFreeChart chart, int x, int y) {
+
+		try {
+			ChartUtilities.saveChartAsPNG(name, chart, x, y);
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+
+	}
+
 	// Methode zum Exportieren als GIF
+	public static void exportGIF(File name, JFreeChart chart, int x, int y){
+
+		try {
+
+			exportPNG(name, chart, x, y);
+			FileInputStream fin = new FileInputStream(name);
+			BufferedImage image = ImageIO.read(fin);
+			String sPath = name.getPath();
+			ImageIO.write(image, "GIF", new File(sPath));
+
+		} catch (FileNotFoundException e){
+			e.printStackTrace();
+		} catch (IOException f){
+			f.printStackTrace();
+		}
+
+	}
 
 	// Methode zum Exportieren als PDF
-	public static void export(File name, JFreeChart chart, int x, int y)
+	public static void exportPDF(File name, JFreeChart chart, int x, int y)
 			throws FileNotFoundException, DocumentException {
+
 		com.itextpdf.text.Rectangle pagesize = new com.itextpdf.text.Rectangle(x, y);
 		Document document = new Document(pagesize, 50, 50, 50, 50);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(name));
@@ -327,6 +362,7 @@ public class Ringchart extends ApplicationFrame {
 		g2.dispose();
 		cb.addTemplate(tp, 0, 0);
 		document.close();
+
 	}
 
 	// Mainmethode

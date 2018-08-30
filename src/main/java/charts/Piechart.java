@@ -24,12 +24,9 @@ import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.RefineryUtilities;
-import org.jfree.util.Log;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -301,6 +298,7 @@ public class Piechart extends ApplicationFrame {
 
 	// Methode zum Speichern als PNG
 	public static void exportPNG(File name, JFreeChart chart, int x, int y) {
+
 		try {
 			ChartUtilities.saveChartAsPNG(name, chart, x, y);
 		} catch (IOException e){
