@@ -2,9 +2,9 @@ package charts.objects;
 
 public class Company {
 
-	String date;
-	String security;
-	double weighting;
+	private final String date;
+	private final String security;
+	private final double weighting;
 
 	public Company(String d, String s, double w) {
 
@@ -26,15 +26,4 @@ public class Company {
 		return weighting;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public void setSecurity(String security) {
-		this.security = security;
-	}
-
-	public void setWeighting(double weighting) {
-		this.weighting = weighting;
-	}
 }

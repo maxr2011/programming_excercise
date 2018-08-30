@@ -2,8 +2,8 @@ package charts.objects;
 
 public class Country {
 
-    String name;
-    double weight;
+    private String name;
+    private double weight;
 
     public Country() {
         //leerer Konstruktor
@@ -23,8 +23,7 @@ public class Country {
     }
 
     public boolean nameIsNull(){
-        if(this.name == null) return true;
-        return false;
+        return this.name == null;
     }
 
     public void setName(String name) {

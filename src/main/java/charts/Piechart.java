@@ -28,48 +28,57 @@ import org.jfree.ui.RefineryUtilities;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.security.InvalidParameterException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
-public class Piechart extends ApplicationFrame {
+@SuppressWarnings("SameParameterValue")
+class Piechart extends ApplicationFrame {
 
 	//Variablen
 
-	public static ArrayList<Country> countries;
+	private static java.util.List<Country> countries = new ArrayList<Country>();
 
-	public static final int HEIGHT = 750;
-	public static final int WIDTH = 537;
+	private static final int HEIGHT = 750;
+	private static final int WIDTH = 537;
 
 	//Datenbankanbindung
 	private static final String url = "jdbc:postgresql://localhost/exercise";
 	private static final String user = "mare";
 	private static final String password = "toor";
 
+	// Java Logger
+	private static final Logger LOGGER = Logger.getLogger( Piechart.class.getName() );
+
 	//Tabellenname
 	private static final String table = "country_table";
 
 	//Pfad zur xls Datei
-	public static String EXAMPLE_XLS_FILE = "piechart-data.xls";
+	private static final String EXAMPLE_XLS_FILE = "piechart-data.xls";
 
 	//Pfad der PNG-Datei
-	public static String PNG_FILE = "piechart-example.png";
+	private static final String PNG_FILE = "piechart-example.png";
 
 	//Pfad der PDF-Datei
-	public static String PDF_FILE = "piechart-example.pdf";
+	private static final String PDF_FILE = "piechart-example.pdf";
 
 	//Konstruktor
-	public Piechart(String title) throws FileNotFoundException, DocumentException {
+	private Piechart(String title) {
 		super(title);
 
-		JPanel cp = createDemoPanel(countries);
+		JPanel cp = createDemoPanel();
 
 		//cp.setBackground(Color.WHITE);
 
 		setContentPane(cp);
 	}
 
-	private static PieDataset createDataset(ArrayList<Country> cl) {
+	private static PieDataset createDataset(java.util.List<Country> cl) {
 		DefaultPieDataset dataset = new DefaultPieDataset();
 
 		for (Country c : cl) {
@@ -126,15 +135,18 @@ public class Piechart extends ApplicationFrame {
 		// Sektionen Outline
 		plot.setSectionOutlinePaint(Color.white);
 
+		// Legende mit quadratischen Colorboxen
+		plot.setLegendItemShape(new java.awt.Rectangle(15,15));
+
 		// Legende
 		chart.getLegend().setFrame(BlockBorder.NONE);
 		chart.getLegend().setItemLabelPadding(new RectangleInsets(5.0, 2.0, 10.0, 900.0));
-		chart.getLegend().setPadding(new RectangleInsets(20.0, 20.0, 0.0, 0.0));
+		chart.getLegend().setPadding(new RectangleInsets(10.0, 10.0, 0.0, 0.0));
 
 		return chart;
 	}
 
-	public static JPanel createDemoPanel(ArrayList<Country> cl) throws FileNotFoundException, DocumentException {
+	private static JPanel createDemoPanel() {
 		JFreeChart chart = createChart(createDataset(countries));
 
 		// PNG export
@@ -147,62 +159,68 @@ public class Piechart extends ApplicationFrame {
 	}
 
 	//Methode um xls Datei einzulesen
-	public static ArrayList<Country> readXLSFile() throws IOException {
+	private static ArrayList<Country> readXLSFile() {
 
 		ArrayList<Country> countries = new ArrayList<Country>();
 
-		InputStream ExcelFileToRead = new FileInputStream(EXAMPLE_XLS_FILE);
-		HSSFWorkbook wb = new HSSFWorkbook(ExcelFileToRead);
+		try {
 
-		HSSFSheet sheet = wb.getSheetAt(0);
-		HSSFRow row;
-		HSSFCell cell;
+			InputStream ExcelFileToRead = new FileInputStream(EXAMPLE_XLS_FILE);
+			HSSFWorkbook wb = new HSSFWorkbook(ExcelFileToRead);
 
-		Iterator rows = sheet.rowIterator();
-		int j = 0;
+			HSSFSheet sheet = wb.getSheetAt(0);
+			HSSFRow row;
+			HSSFCell cell;
 
-		while (rows.hasNext()) {
-			row = (HSSFRow) rows.next();
-			Iterator cells = row.cellIterator();
+			Iterator rows = sheet.rowIterator();
+			int j = 0;
 
-			// Header überspringen (erste Zeile exel)
-			j++;
-			if (j == 1) {
-				continue;
-			}
+			while (rows.hasNext()) {
+				row = (HSSFRow) rows.next();
+				Iterator cells = row.cellIterator();
 
-			//Country Objekt erstellen
-			Country c = new Country();
-			boolean isNull = false;
-
-			while (cells.hasNext()) {
-				cell = (HSSFCell) cells.next();
-
-				if (cell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
-
-					//funktioniert nur in diesem Fall
-					String stringcell = "";
-					stringcell += cell.getStringCellValue();
-					c.setName(stringcell);
-
-				} else if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-
-					//funktioniert nur in diesem Fall
-					c.setWeight(cell.getNumericCellValue());
-
-				} else {
-					//U Can Handel Boolean, Formula, Errors
+				// Header überspringen (erste Zeile exel)
+				j++;
+				if (j == 1) {
+					continue;
 				}
 
-			}
+				//Country Objekt erstellen
+				Country c = new Country();
 
-			if (!isNull) {
+				while (cells.hasNext()) {
+					cell = (HSSFCell) cells.next();
+
+					if (cell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+
+						//funktioniert nur in diesem Fall
+						String stringcell = "";
+						stringcell += cell.getStringCellValue();
+						c.setName(stringcell);
+
+					} else if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+
+						//funktioniert nur in diesem Fall
+						c.setWeight(cell.getNumericCellValue());
+
+					} else {
+						//U Can Handel Boolean, Formula, Errors
+						throw new InvalidParameterException("Hier sollte man nicht hingelangen!");
+					}
+
+				}
+
 				//letzte Zeile (null-Zeile überspringen)
 				if (!c.nameIsNull()) {
 					countries.add(c);
 				}
+
+
 			}
 
+		} catch (IOException e){
+			// IOException abfangen
+			e.printStackTrace();
 		}
 
 		return countries;
@@ -210,7 +228,7 @@ public class Piechart extends ApplicationFrame {
 	}
 
 	// Datenbankverbindung aufbauen JDBC
-	public static Connection connect() {
+	private static Connection connect() {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url, user, password);
@@ -223,31 +241,32 @@ public class Piechart extends ApplicationFrame {
 	}
 
 	// Hilfsmethode für JDBC
-	public static void minimal_query(String SQL) {
+	private static void minimal_query(String SQL) {
 
 		try (Connection testconn = connect();
 			 Statement stmt = testconn.createStatement();
 			 ResultSet rs = stmt.executeQuery(SQL)) {
 			// nothing to do
+			System.out.println("Connection successful!");
 		} catch (SQLException e) {
 			// nothing to do
+			LOGGER.log(Level.FINE, e.getMessage());
 		}
 
 	}
 
 	// Methode um ein Country hinzuzufügen
-	public static void insertCountry(Country c) {
+	private static void insertCountry(Country c) {
 
-		String insertSQL = "INSERT INTO " + table + "(name, weight) " + "VALUES (?,?)";
-
-		long id = 0;
+		String insertSQL = "INSERT INTO " + table + " (name, weight) " + "VALUES (?,?);";
 
 		try (Connection conn = connect();
-			 PreparedStatement pstmt = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);) {
+			 PreparedStatement pstmt = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
+
 			pstmt.setString(1, c.getName());
 			pstmt.setDouble(2, c.getWeight());
 
-			int affectedRows = pstmt.executeUpdate();
+			pstmt.execute();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -256,7 +275,7 @@ public class Piechart extends ApplicationFrame {
 	}
 
 	// Methode um Liste an Countries in Datenbank zu schreiben (JDBC)
-	public static void writeDataToDatabase(ArrayList<Country> cl) {
+	private static void writeDataToDatabase(ArrayList<Country> cl) {
 
 		// Tabelle erstellen falls nicht existiert
 		String createSQL = "CREATE TABLE IF NOT EXISTS " + table + " (name varchar(40), weight float(53));";
@@ -274,7 +293,7 @@ public class Piechart extends ApplicationFrame {
 	}
 
 	// Methode um Liste an Countries aus der Datenbank auszulesen
-	public static ArrayList<Country> readFromDatabase() {
+	private static ArrayList<Country> readFromDatabase() {
 
 		ArrayList<Country> cl = new ArrayList<Country>();
 
@@ -290,6 +309,7 @@ public class Piechart extends ApplicationFrame {
 
 			}
 		} catch (SQLException e) {
+			System.out.println("here");
 			e.printStackTrace();
 		}
 
@@ -297,7 +317,7 @@ public class Piechart extends ApplicationFrame {
 	}
 
 	// Methode zum Speichern als PNG
-	public static void exportPNG(File name, JFreeChart chart, int x, int y) {
+	private static void exportPNG(File name, JFreeChart chart, int x, int y) {
 
 		try {
 			ChartUtilities.saveChartAsPNG(name, chart, x, y);
@@ -307,30 +327,75 @@ public class Piechart extends ApplicationFrame {
 
 	}
 
+	/*
+	// Methode zum Exportieren als GIF
+	public static void exportGIF(File name, JFreeChart chart, int x, int y){
+
+		try {
+
+			exportPNG(name, chart, x, y);
+			FileInputStream fin = new FileInputStream(name);
+			BufferedImage image = ImageIO.read(fin);
+			String sPath = name.getPath();
+			ImageIO.write(image, "GIF", new File(sPath));
+
+		} catch (FileNotFoundException e){
+			e.printStackTrace();
+		} catch (IOException f){
+			f.printStackTrace();
+		}
+
+	}
+	*/
+
 	// Methode zum Exportieren als PDF
-	public static void exportPDF(File name, JFreeChart chart, int x, int y)
-			throws FileNotFoundException, DocumentException {
+	private static void exportPDF(File name, JFreeChart chart, int x, int y) {
 
-		Rectangle pagesize = new Rectangle(x, y);
-		Document document = new Document(pagesize, 50, 50, 50, 50);
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(name));
-		document.open();
-		PdfContentByte cb = writer.getDirectContent();
-		PdfTemplate tp = cb.createTemplate(x, y);
-		Graphics2D g2 = tp.createGraphics(x, y, new DefaultFontMapper());
+		try {
 
-		java.awt.Rectangle recta = new java.awt.Rectangle(x, y);
-		chart.draw(g2, recta);
-		g2.dispose();
-		cb.addTemplate(tp, 0, 0);
-		document.close();
+			Rectangle pagesize = new Rectangle(x, y);
+			Document document = new Document(pagesize, 50, 50, 50, 50);
+			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(name));
+			document.open();
+			PdfContentByte cb = writer.getDirectContent();
+			PdfTemplate tp = cb.createTemplate(x, y);
+			Graphics2D g2 = tp.createGraphics(x, y, new DefaultFontMapper());
+
+			java.awt.Rectangle recta = new java.awt.Rectangle(x, y);
+			chart.draw(g2, recta);
+			g2.dispose();
+			cb.addTemplate(tp, 0, 0);
+			document.close();
+
+		} catch (DocumentException | FileNotFoundException e){
+
+			// Fehler mit dem Dokument
+			e.printStackTrace();
+
+		}
 
 	}
 
-	// Mainmethode
-	public static void main(String[] args) throws IOException, FileNotFoundException, DocumentException {
+	// 2 PDFs zusammenfügen
+	private static void mergePDF(String source1, String source2, String destination){
 
-		/** TODO
+		try {
+			PDFMergerUtility ut = new PDFMergerUtility();
+			ut.addSource(new File(source1));
+			ut.addSource(source2);
+			ut.setDestinationFileName(destination);
+			ut.mergeDocuments();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+
+	// Mainmethode
+	public static void main(String[] args) {
+
+		/* TODO
 		 * XLS einlesen
 		 * Datenbank schreiben
 		 * Datenbank lesen
@@ -343,11 +408,14 @@ public class Piechart extends ApplicationFrame {
 		// Daten in die Datenbank schrieben
 		writeDataToDatabase(countriesXLS);
 
-		// Daten von der Datenbank übergeben
-		ArrayList<Country> countriesDB = readFromDatabase();
-
 		// Globale Variable
-		countries = countriesDB;
+		// Daten von der Datenbank übergeben
+		countries = readFromDatabase();
+
+		// Daten sortieren
+		countries = countries.stream()
+							   .sorted(Comparator.comparing(Country::getWeight).reversed())
+							   .collect(Collectors.toList());
 
 		double hundred_check = 0.0;
 
@@ -371,11 +439,7 @@ public class Piechart extends ApplicationFrame {
 		demo.setVisible(true);
 
 		// 2 PDFs zusammenfügen
-		PDFMergerUtility ut = new PDFMergerUtility();
-		ut.addSource(new File(PDF_FILE));
-		ut.addSource("ringchart-example.pdf");
-		ut.setDestinationFileName("piechart-ringchart-example.pdf");
-		ut.mergeDocuments();
+		mergePDF(PDF_FILE, "ringchart-example.pdf","piechart-ringchart-example.pdf");
 
 	}
 }

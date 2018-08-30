@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class BasicCSVReader {
+@SuppressWarnings("SameParameterValue")
+class BasicCSVReader {
 
 	//CSV file path
 	private static final String SAMPLE_CSV_FILE_PATH = "exercise.csv";
@@ -21,7 +22,7 @@ public class BasicCSVReader {
 	//CSV file header
 	private static final String[] FILE_HEADER_MAPPING = {"name", "country", "nav", "volume"};
 
-	public static void readCsvFile(String fileName) {
+	private static void readCsvFile(String fileName) {
 
 		FileReader fileReader = null;
 
@@ -56,7 +57,14 @@ public class BasicCSVReader {
 			ArrayList<Double> volumes = new ArrayList<>();
 
 			// Test mit Streams
-			List<Fund> nfunds = funds.stream().limit(100).collect(toList());
+			//List<Fund> nfunds = funds.stream().limit(100).collect(toList());
+
+			// Liste nach Namen sortieren
+			/*List<String> al = funds.stream()
+									  .sorted((n1, n2) -> n1.getName().compareTo(n2.getName()))
+									  .map(n -> n.getName())
+									  .collect(Collectors.toList());
+			*/
 
 			// Durchschnitt mit Streams
 			double avgFunds = funds.stream().collect(averagingDouble(Fund::getNav));
@@ -143,7 +151,7 @@ public class BasicCSVReader {
 			try {
 				fileReader.close();
 				csvFileParser.close();
-			} catch (IOException e) {
+			} catch (IOException | NullPointerException e) {
 				System.out.println("Error while closing fileReader/csvFileParser !!!");
 				e.printStackTrace();
 			}
@@ -153,7 +161,7 @@ public class BasicCSVReader {
 
 	//Eigene Methoden um Ergebnisse zu vergleichen
 
-	public static double avg(int n, double[] values) {
+	private static double avg(int n, double[] values) {
 
 		double v = sum(values);
 		v /= n;
@@ -161,7 +169,7 @@ public class BasicCSVReader {
 
 	}
 
-	public static double sum(double[] values) {
+	private static double sum(double[] values) {
 
 		double v = 0.0;
 

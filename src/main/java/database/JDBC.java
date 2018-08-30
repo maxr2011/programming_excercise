@@ -2,7 +2,7 @@ package database;
 
 import java.sql.*;
 
-public class JDBC {
+class JDBC {
 
     private static final String url = "jdbc:postgresql://localhost/exercise";
     private static final String user = "mare";
@@ -12,11 +12,9 @@ public class JDBC {
 
         String SQL = "SELECT * FROM test";
 
-        try(
-        Connection testconn = connect();
-        Statement stmt = testconn.createStatement();
-        ResultSet rs = stmt.executeQuery(SQL)
-        ){
+        try(Connection testconn = connect();
+            Statement stmt = testconn.createStatement();
+            ResultSet rs = stmt.executeQuery(SQL)){
 
             while(rs.next()){
                 //gibt alle Namen von Tabelle "test" aus
@@ -24,12 +22,12 @@ public class JDBC {
             }
 
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
 
     }
 
-    public static Connection connect() {
+    private static Connection connect() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url, user, password);

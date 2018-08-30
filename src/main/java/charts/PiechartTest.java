@@ -9,7 +9,7 @@ import org.jfree.ui.RectangleEdge;
 
 import java.awt.*;
 
-public class PiechartTest {
+class PiechartTest {
 
 	public static void main(String[] args) {
 

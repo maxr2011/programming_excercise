@@ -1,11 +1,11 @@
 package streams;
 
-public class Fund {
+class Fund {
 
-	public String name;
-	public String country;
-	public double nav;
-	public double volume;
+	private final String name;
+	private final String country;
+	private final double nav;
+	private final double volume;
 
 	public Fund(String name, String country, double nav, double volume) {
 
@@ -16,9 +16,7 @@ public class Fund {
 
 	}
 
-	public String getName(){
-		return name;
-	}
+	public String getName() { return name; }
 	public String getCountry() { return country; }
 	public double getNav() { return nav; }
 	public double getVolume() { return volume; }

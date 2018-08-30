@@ -21,7 +21,6 @@ import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RefineryUtilities;
-import streams.Fund;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -32,21 +31,26 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class Ringchart extends ApplicationFrame {
+@SuppressWarnings("SameParameterValue")
+class Ringchart extends ApplicationFrame {
 
 	//Variablen
+	private static List<Company> companies;
 
-	public static List<Company> companies;
-
-	public static final int WIDTH = 600;
-	public static final int HEIGHT = 400;
+	private static final int WIDTH = 600;
+	private static final int HEIGHT = 400;
 
 	//Datenbankanbindung
 	private static final String url = "jdbc:postgresql://localhost/exercise";
 	private static final String user = "mare";
 	private static final String password = "toor";
+
+	// Java Logger
+	private static final Logger LOGGER = Logger.getLogger( Ringchart.class.getName() );
 
 	//Tabellenname
 	private static final String table = "company_table";
@@ -63,7 +67,7 @@ public class Ringchart extends ApplicationFrame {
 	//PDF file name
 	private static final String PDF_FILE = "ringchart-example.pdf";
 
-	public Ringchart(String title) throws FileNotFoundException, DocumentException {
+	private Ringchart(String title) {
 		super(title);
 		JPanel panel = createDemoPanel();
 		panel.setPreferredSize(new java.awt.Dimension(WIDTH, HEIGHT));
@@ -97,6 +101,9 @@ public class Ringchart extends ApplicationFrame {
 				dataset,             // data
 				true,               // include legend
 				true, false);
+
+		//LegendTitle legend = chart.getLegend();
+		//chart.addSubtitle(new TextTitle("JFreeChart WaferMapPlot", new Font("SansSerif", Font.PLAIN, 9)));
 
 		// Ringplot
 		RingPlot plot = (RingPlot) chart.getPlot();
@@ -151,6 +158,9 @@ public class Ringchart extends ApplicationFrame {
 		// Tiefe des Graphens
 		plot.setSectionDepth(0.6);
 
+		// Legende mit quadratischen Colorboxen
+		plot.setLegendItemShape(new java.awt.Rectangle(15, 15));
+
 		chart.getLegend().setPosition(RectangleEdge.RIGHT);
 		chart.getLegend().setFrame(BlockBorder.NONE);
 
@@ -163,7 +173,7 @@ public class Ringchart extends ApplicationFrame {
 	 *
 	 * @return A panel.
 	 */
-	public static JPanel createDemoPanel() throws FileNotFoundException, DocumentException {
+	private static JPanel createDemoPanel() {
 		JFreeChart chart = createChart(createDataset(companies));
 
 		// Als GIF exportieren
@@ -176,8 +186,9 @@ public class Ringchart extends ApplicationFrame {
 	}
 
 	//CSV Datei einlesen
-	public static ArrayList<Company> readCsvFile(String fileName) {
+	private static ArrayList<Company> readCsvFile(String fileName) {
 
+		// Liste erstellen
 		ArrayList<Company> companies = new ArrayList<Company>();
 
 		FileReader fileReader = null;
@@ -188,9 +199,6 @@ public class Ringchart extends ApplicationFrame {
 		CSVFormat csvFileFormat = CSVFormat.DEFAULT.withHeader(FILE_HEADER_MAPPING).withSkipHeaderRecord();
 
 		try {
-
-			//Liste erstellen
-			List<Fund> funds = new ArrayList<Fund>();
 
 			//FileReader initialisieren
 			fileReader = new FileReader(fileName);
@@ -215,7 +223,7 @@ public class Ringchart extends ApplicationFrame {
 			try {
 				fileReader.close();
 				csvFileParser.close();
-			} catch (IOException e) {
+			} catch (IOException | NullPointerException e) {
 				System.out.println("Error while closing fileReader/csvFileParser !!!");
 				e.printStackTrace();
 			}
@@ -226,7 +234,7 @@ public class Ringchart extends ApplicationFrame {
 	}
 
 	// Datenbankverbindung aufbauen JDBC
-	public static Connection connect() {
+	private static Connection connect() {
 		Connection conn = null;
 		try {
 			conn = DriverManager.getConnection(url, user, password);
@@ -239,33 +247,33 @@ public class Ringchart extends ApplicationFrame {
 	}
 
 	// Hilfsmethode für JDBC
-	public static void minimal_query(String SQL) {
+	private static void minimal_query(String SQL) {
 
 		try (Connection testconn = connect();
 			 Statement stmt = testconn.createStatement();
 			 ResultSet rs = stmt.executeQuery(SQL)) {
 			// nothing to do
+
 		} catch (SQLException e) {
 			// nothing to do
+			LOGGER.log(Level.FINE, e.getMessage());
 		}
 
 	}
 
 	// Methode um eine Company hinzuzufügen
-	public static void insertCompany(Company c) {
+	private static void insertCompany(Company c) {
 
 		String insertSQL = "INSERT INTO " + table + "(Date, Security, Weighting) " + "VALUES (?,?,?)";
 
-		long id = 0;
-
 		try (Connection conn = connect();
-			 PreparedStatement pstmt = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);) {
+			 PreparedStatement pstmt = conn.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS)) {
 
 			pstmt.setString(1, c.getDate());
 			pstmt.setString(2, c.getSecurity());
 			pstmt.setDouble(3, c.getWeighting());
 
-			int affectedRows = pstmt.executeUpdate();
+			pstmt.execute();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -274,7 +282,7 @@ public class Ringchart extends ApplicationFrame {
 	}
 
 	// Methode um Liste an Countries in Datenbank zu schreiben (JDBC)
-	public static void writeDataToDatabase(ArrayList<Company> cl) {
+	private static void writeDataToDatabase(ArrayList<Company> cl) {
 
 		// Tabelle erstellen falls nicht existiert
 		String createSQL = "CREATE TABLE IF NOT EXISTS " + table
@@ -293,7 +301,7 @@ public class Ringchart extends ApplicationFrame {
 	}
 
 	// Methode um Liste an Companies aus der Datenbank auszulesen
-	public static ArrayList<Company> readFromDatabase() {
+	private static ArrayList<Company> readFromDatabase() {
 
 		ArrayList<Company> cl = new ArrayList<Company>();
 
@@ -316,18 +324,18 @@ public class Ringchart extends ApplicationFrame {
 	}
 
 	// Methode zum Exportieren als PNG
-	public static void exportPNG(File name, JFreeChart chart, int x, int y) {
+	private static void exportPNG(File name, JFreeChart chart, int x, int y) {
 
 		try {
 			ChartUtilities.saveChartAsPNG(name, chart, x, y);
-		} catch (IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
 	// Methode zum Exportieren als GIF
-	public static void exportGIF(File name, JFreeChart chart, int x, int y){
+	private static void exportGIF(File name, JFreeChart chart, int x, int y) {
 
 		try {
 
@@ -337,38 +345,44 @@ public class Ringchart extends ApplicationFrame {
 			String sPath = name.getPath();
 			ImageIO.write(image, "GIF", new File(sPath));
 
-		} catch (FileNotFoundException e){
-			e.printStackTrace();
-		} catch (IOException f){
+		} catch (IOException f) {
 			f.printStackTrace();
 		}
 
 	}
 
 	// Methode zum Exportieren als PDF
-	public static void exportPDF(File name, JFreeChart chart, int x, int y)
-			throws FileNotFoundException, DocumentException {
+	private static void exportPDF(File name, JFreeChart chart, int x, int y) {
 
-		com.itextpdf.text.Rectangle pagesize = new com.itextpdf.text.Rectangle(x, y);
-		Document document = new Document(pagesize, 50, 50, 50, 50);
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(name));
-		document.open();
-		PdfContentByte cb = writer.getDirectContent();
-		PdfTemplate tp = cb.createTemplate(x, y);
-		Graphics2D g2 = tp.createGraphics(x, y, new DefaultFontMapper());
+		try {
 
-		java.awt.Rectangle recta = new java.awt.Rectangle(x, y);
-		chart.draw(g2, recta);
-		g2.dispose();
-		cb.addTemplate(tp, 0, 0);
-		document.close();
+			com.itextpdf.text.Rectangle pagesize = new com.itextpdf.text.Rectangle(x, y);
+			Document document = new Document(pagesize, 50, 50, 50, 50);
+			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(name));
+			document.open();
+			PdfContentByte cb = writer.getDirectContent();
+			PdfTemplate tp = cb.createTemplate(x, y);
+			Graphics2D g2 = tp.createGraphics(x, y, new DefaultFontMapper());
+
+			java.awt.Rectangle recta = new java.awt.Rectangle(x, y);
+			chart.draw(g2, recta);
+			g2.dispose();
+			cb.addTemplate(tp, 0, 0);
+			document.close();
+
+		} catch (DocumentException | FileNotFoundException e) {
+
+			// Fehler mit dem Dokument oder Datei nicht gefunden
+			e.printStackTrace();
+
+		}
 
 	}
 
 	// Mainmethode
-	public static void main(String[] args) throws IOException, FileNotFoundException, DocumentException {
+	public static void main(String[] args) {
 
-		/** TODO
+		/* TODO
 		 * CSV einlesen
 		 * Datenbank schreiben
 		 * Datenbank lesen
@@ -385,8 +399,9 @@ public class Ringchart extends ApplicationFrame {
 		ArrayList<Company> companiesDB = readFromDatabase();
 
 		// Globale Variable
-		companies =  companiesDB.stream().sorted(Comparator.comparing(Company::getWeighting).reversed()).collect(
-				Collectors.toList());
+		companies = companiesDB.stream()
+							   .sorted(Comparator.comparing(Company::getWeighting).reversed())
+							   .collect(Collectors.toList());
 
 		double hundred_check = 0.0;
 
