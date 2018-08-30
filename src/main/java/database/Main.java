@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Main {
+class Main {
 
 	// Mainmethode
 	public static void main(String[] args) {

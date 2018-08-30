@@ -1,6 +1,6 @@
 package streams;
 
-public class Math {
+class Math {
 
 	//Eigene Methoden um Ergebnisse zu vergleichen
 

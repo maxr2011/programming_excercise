@@ -27,12 +27,6 @@ public class Ringchart extends ApplicationFrame {
 	private static final int WIDTH = 600;
 	private static final int HEIGHT = 400;
 
-	//CSV file path
-	private static final String SAMPLE_CSV_FILE_PATH = "Ring Chart Data.csv";
-
-	//CSV file header
-	private static final String[] FILE_HEADER_MAPPING = {"Date", "Security", "Weighting"};
-
 	//GIF file name
 	private static final String GIF_FILE = "ringchart-example.gif";
 
@@ -41,7 +35,7 @@ public class Ringchart extends ApplicationFrame {
 
 	public Ringchart(String title, List<Company> cl) {
 		super(title);
-		this.companies = cl;
+		companies = cl;
 
 		JPanel panel = createDemoPanel();
 		panel.setPreferredSize(new java.awt.Dimension(WIDTH, HEIGHT));
@@ -144,14 +138,6 @@ public class Ringchart extends ApplicationFrame {
 		GenerateOutputFiles.exportPDF(new File(PDF_FILE), chart, WIDTH, HEIGHT);
 
 		return new ChartPanel(chart);
-	}
-
-
-	// Mainmethode
-	public static void main(String[] args) {
-
-
-
 	}
 
 }

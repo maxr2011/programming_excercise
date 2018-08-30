@@ -11,10 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class Main {
-
-	//Variablen
-	private static List<Fund> funds;
+class Main {
 
 	//CSV file path
 	private static final String SAMPLE_CSV_FILE_PATH = "exercise.csv";
@@ -28,7 +25,8 @@ public class Main {
 	// Mainmethode
 	public static void main(String[] args) {
 
-		funds = BasicCSVReader.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
+		//Variablen
+		List<Fund> funds = BasicCSVReader.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
 
 		ArrayList<Double> navs = new ArrayList<>();
 		ArrayList<Double> volumes = new ArrayList<>();

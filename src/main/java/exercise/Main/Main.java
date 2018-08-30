@@ -17,11 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Main {
-
-	//Variablen
-	private static List<Country> countries = new ArrayList<>();
-	private static List<Company> companies;
+class Main {
 
 	private static final int HEIGHT = 750;
 	private static final int WIDTH = 537;
@@ -44,7 +40,7 @@ public class Main {
 
 
 		/* RINGCHART */
-		System.out.println("Erstellt Ringchart");
+		System.out.println("+++ RINGCHART +++");
 		System.out.println();
 
 		/* TODO
@@ -68,9 +64,9 @@ public class Main {
 		ArrayList<Company> companiesDB = CompanyDB.readFromDatabase();
 
 		// Globale Variable
-		companies = companiesDB.stream()
-							   .sorted(Comparator.comparing(Company::getWeighting).reversed())
-							   .collect(Collectors.toList());
+		List<Company> companies = companiesDB.stream()
+											 .sorted(Comparator.comparing(Company::getWeighting).reversed())
+											 .collect(Collectors.toList());
 
 		double hundred_check = 0.0;
 
@@ -78,6 +74,8 @@ public class Main {
 			System.out.println(c.getSecurity());
 			hundred_check += c.getWeighting();
 		}
+
+		System.out.println();
 
 		System.out.println(hundred_check);
 
@@ -96,7 +94,7 @@ public class Main {
 		System.out.println();
 
 		/* PIECHART */
-		System.out.println("Erstellt Piechart");
+		System.out.println("+++ PIECHART +++");
 		System.out.println();
 
 		/* TODO
@@ -118,7 +116,8 @@ public class Main {
 
 		// Globale Variable
 		// Daten von der Datenbank übergeben
-		countries = CountryDB.readFromDatabase();
+		//Variablen
+		List<Country> countries = CountryDB.readFromDatabase();
 
 		// Daten sortieren
 		countries = countries.stream()
@@ -133,6 +132,8 @@ public class Main {
 			hundred_check += c.getWeight();
 		}
 
+		System.out.println();
+
 		System.out.println(hundred_check);
 
 		// Check if everything adds up to 100%
@@ -145,6 +146,8 @@ public class Main {
 		demob.setSize(WIDTH, HEIGHT);
 		RefineryUtilities.centerFrameOnScreen(demob);
 		demob.setVisible(true);
+
+		System.out.println();
 
 		// 2 PDFs zusammenfügen
 		GenerateOutputFiles.mergePDF(PDF_FILE, "ringchart-example.pdf", "piechart-ringchart-example.pdf");

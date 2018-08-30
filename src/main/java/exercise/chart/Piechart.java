@@ -28,11 +28,6 @@ public class Piechart extends ApplicationFrame {
 	private static final int HEIGHT = 750;
 	private static final int WIDTH = 537;
 
-	public static JFreeChart jchart;
-
-	//Pfad zur xls Datei
-	private static final String EXAMPLE_XLS_FILE = "piechart-data.xls";
-
 	//Pfad der PNG-Datei
 	private static final String PNG_FILE = "piechart-example.png";
 
@@ -42,7 +37,7 @@ public class Piechart extends ApplicationFrame {
 	//Konstruktor
 	public Piechart(String title, List<Country> cl) {
 		super(title);
-		this.countries = cl;
+		countries = cl;
 
 		JPanel cp = createDemoPanel();
 
@@ -124,7 +119,6 @@ public class Piechart extends ApplicationFrame {
 	// Demopanel erzeugen
 	private static JPanel createDemoPanel() {
 		JFreeChart chart = createChart(createDataset(countries));
-		jchart = chart;
 
 		// PNG export
 		GenerateOutputFiles.exportPNG(new File(PNG_FILE), chart, WIDTH, HEIGHT);
