@@ -1,10 +1,11 @@
-package charts_spring;
+package exercise.spring;
 
-import charts.objects.Country;
+import exercise.input.ReadXLS;
+import exercise.objects.Country;
 
 import java.util.ArrayList;
 
-class Piechart {
+class spring {
 
 	//Pfad zur xls Datei
 	private static final String EXAMPLE_XLS_FILE = "piechart-data.xls";
@@ -14,7 +15,7 @@ class Piechart {
 
 		// Liste einlesen aus der Datei
 		// Variables
-		ArrayList<Country> countries = charts.Piechart.readXLSFile(EXAMPLE_XLS_FILE);
+		ArrayList<Country> countries = ReadXLS.readXLSFile(EXAMPLE_XLS_FILE);
 
 		for(Country c : countries){
 			System.out.println(c.getName());

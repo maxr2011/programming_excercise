@@ -1,13 +1,11 @@
-package charts.objects;
+package exercise.objects;
 
 public class Country {
 
     private String name;
     private double weight;
 
-    public Country() {
-        //leerer Konstruktor
-    }
+    public Country() {}
 
     public Country(String n, double w){
         this.name = n;

@@ -1,4 +1,4 @@
-package charts.objects;
+package exercise.objects;
 
 public class Company {
 

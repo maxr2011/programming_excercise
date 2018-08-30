@@ -1,4 +1,4 @@
-package charts;
+package exercise.example;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
