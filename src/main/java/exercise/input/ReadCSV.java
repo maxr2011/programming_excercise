@@ -14,7 +14,7 @@ public class ReadCSV {
 
 
 	//CSV Datei einlesen
-	public static ArrayList<Company> readCsvFile(String fileName, String[] FILE_HEADER_MAPPING) {
+	public static ArrayList<Company> readCsvFile(String fileName, String[] headerMapping) {
 
 		// Liste erstellen
 		ArrayList<Company> companies = new ArrayList<>();
@@ -24,7 +24,7 @@ public class ReadCSV {
 		CSVParser csvFileParser = null;
 
 		//header mapping
-		CSVFormat csvFileFormat = CSVFormat.DEFAULT.withHeader(FILE_HEADER_MAPPING).withSkipHeaderRecord();
+		CSVFormat csvFileFormat = CSVFormat.DEFAULT.withHeader(headerMapping).withSkipHeaderRecord();
 
 		try {
 
