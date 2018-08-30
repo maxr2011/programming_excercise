@@ -8,11 +8,13 @@ import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
@@ -42,7 +44,7 @@ class Piechart extends ApplicationFrame {
 
 	//Variablen
 
-	private static java.util.List<Country> countries = new ArrayList<Country>();
+	private static java.util.List<Country> countries = new ArrayList<>();
 
 	private static final int HEIGHT = 750;
 	private static final int WIDTH = 537;
@@ -133,7 +135,7 @@ class Piechart extends ApplicationFrame {
 		//plot.setExplodePercent("Deutschland", 0.3);
 
 		// Sektionen Outline
-		plot.setSectionOutlinePaint(Color.white);
+		plot.setSectionOutlinePaint(o -> 0, Color.white);
 
 		// Legende mit quadratischen Colorboxen
 		plot.setLegendItemShape(new java.awt.Rectangle(15,15));
@@ -161,7 +163,7 @@ class Piechart extends ApplicationFrame {
 	//Methode um xls Datei einzulesen
 	private static ArrayList<Country> readXLSFile() {
 
-		ArrayList<Country> countries = new ArrayList<Country>();
+		ArrayList<Country> countries = new ArrayList<>();
 
 		try {
 
@@ -191,14 +193,14 @@ class Piechart extends ApplicationFrame {
 				while (cells.hasNext()) {
 					cell = (HSSFCell) cells.next();
 
-					if (cell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+					if (cell.getCellTypeEnum() == CellType.STRING) {
 
 						//funktioniert nur in diesem Fall
 						String stringcell = "";
 						stringcell += cell.getStringCellValue();
 						c.setName(stringcell);
 
-					} else if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
+					} else if (cell.getCellTypeEnum() == CellType.NUMERIC) {
 
 						//funktioniert nur in diesem Fall
 						c.setWeight(cell.getNumericCellValue());
@@ -246,11 +248,15 @@ class Piechart extends ApplicationFrame {
 		try (Connection testconn = connect();
 			 Statement stmt = testconn.createStatement();
 			 ResultSet rs = stmt.executeQuery(SQL)) {
+
 			// nothing to do
-			System.out.println("Connection successful!");
+			LOGGER.log(Level.FINE, "Connection successful!");
+
 		} catch (SQLException e) {
+
 			// nothing to do
 			LOGGER.log(Level.FINE, e.getMessage());
+
 		}
 
 	}
@@ -295,7 +301,7 @@ class Piechart extends ApplicationFrame {
 	// Methode um Liste an Countries aus der Datenbank auszulesen
 	private static ArrayList<Country> readFromDatabase() {
 
-		ArrayList<Country> cl = new ArrayList<Country>();
+		ArrayList<Country> cl = new ArrayList<>();
 
 		// Daten auslesen
 		String selectSQL = "SELECT * FROM " + table + ";";
@@ -384,7 +390,7 @@ class Piechart extends ApplicationFrame {
 			ut.addSource(new File(source1));
 			ut.addSource(source2);
 			ut.setDestinationFileName(destination);
-			ut.mergeDocuments();
+			ut.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

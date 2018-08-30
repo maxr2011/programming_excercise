@@ -9,18 +9,24 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("SameParameterValue")
-class BasicCSVReader {
+public class BasicCSVReader {
 
 	//CSV file path
 	private static final String SAMPLE_CSV_FILE_PATH = "exercise.csv";
 
 	//CSV file header
 	private static final String[] FILE_HEADER_MAPPING = {"name", "country", "nav", "volume"};
+
+	//Java Logger
+	private static final Logger LOGGER = Logger.getLogger( BasicCSVReader.class.getName() );
 
 	private static void readCsvFile(String fileName) {
 
@@ -34,7 +40,7 @@ class BasicCSVReader {
 		try {
 
 			//Liste erstellen
-			List<Fund> funds = new ArrayList<Fund>();
+			List<Fund> funds = new ArrayList<>();
 
 			//FileReader initialisieren
 			fileReader = new FileReader(fileName);
@@ -60,11 +66,14 @@ class BasicCSVReader {
 			//List<Fund> nfunds = funds.stream().limit(100).collect(toList());
 
 			// Liste nach Namen sortieren
-			/*List<String> al = funds.stream()
-									  .sorted((n1, n2) -> n1.getName().compareTo(n2.getName()))
-									  .map(n -> n.getName())
+			List<String> al = funds.stream()
+									  .sorted(Comparator.comparing(Fund::getName))
+									  .map(Fund::getName)
 									  .collect(Collectors.toList());
-			*/
+
+			for(String a : al){
+				LOGGER.log(Level.FINE, "Fund name: "+a);
+			}
 
 			// Durchschnitt mit Streams
 			double avgFunds = funds.stream().collect(averagingDouble(Fund::getNav));
@@ -84,7 +93,7 @@ class BasicCSVReader {
 			System.out.println();
 
 			// Summe der Volumes
-			double totalVolumes = funds.stream().collect(summingDouble(Fund::getVolume));
+			double totalVolumes = funds.stream().mapToDouble(Fund::getVolume).sum();
 			System.out.println("Summe volume Streams: " + totalVolumes);
 
 			// Summe mit foreach und eigener Methode
@@ -148,15 +157,20 @@ class BasicCSVReader {
 			System.out.println("Error in CsvFileReader !!!");
 			e.printStackTrace();
 		} finally {
-			try {
-				fileReader.close();
-				csvFileParser.close();
-			} catch (IOException | NullPointerException e) {
-				System.out.println("Error while closing fileReader/csvFileParser !!!");
-				e.printStackTrace();
-			}
+			closeReaderParser(fileReader, csvFileParser);
 		}
 
+	}
+
+	// FileReader und CSVParser schließen
+	public static void closeReaderParser(FileReader fileReader, CSVParser csvFileParser) {
+		try {
+			fileReader.close();
+			csvFileParser.close();
+		} catch (IOException | NullPointerException e) {
+			System.out.println("Error while closing fileReader/csvFileParser !!!");
+			e.printStackTrace();
+		}
 	}
 
 	//Eigene Methoden um Ergebnisse zu vergleichen
@@ -173,15 +187,15 @@ class BasicCSVReader {
 
 		double v = 0.0;
 
-		for (int i = 0; i < values.length; i++) {
-			v += values[i];
+		for (double value : values) {
+			v += value;
 		}
 
 		return v;
 
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 
 		readCsvFile(SAMPLE_CSV_FILE_PATH);
 

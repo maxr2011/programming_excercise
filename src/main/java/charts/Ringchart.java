@@ -21,6 +21,7 @@ import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RefineryUtilities;
+import streams.BasicCSVReader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -148,7 +149,7 @@ class Ringchart extends ApplicationFrame {
 		//plot.setSectionOutlinesVisible(false);
 
 		// Sektion Outline färben
-		plot.setSectionOutlinePaint(new Color(0x808080));
+		plot.setSectionOutlinePaint(o -> 0, new Color(0x808080));
 
 		// Seperator Linie unsichtbar machen
 		plot.setSeparatorsVisible(false);
@@ -189,7 +190,7 @@ class Ringchart extends ApplicationFrame {
 	private static ArrayList<Company> readCsvFile(String fileName) {
 
 		// Liste erstellen
-		ArrayList<Company> companies = new ArrayList<Company>();
+		ArrayList<Company> companies = new ArrayList<>();
 
 		FileReader fileReader = null;
 
@@ -220,13 +221,7 @@ class Ringchart extends ApplicationFrame {
 			System.out.println("Error in CsvFileReader !!!");
 			e.printStackTrace();
 		} finally {
-			try {
-				fileReader.close();
-				csvFileParser.close();
-			} catch (IOException | NullPointerException e) {
-				System.out.println("Error while closing fileReader/csvFileParser !!!");
-				e.printStackTrace();
-			}
+			BasicCSVReader.closeReaderParser(fileReader, csvFileParser);
 		}
 
 		return companies;
@@ -252,11 +247,15 @@ class Ringchart extends ApplicationFrame {
 		try (Connection testconn = connect();
 			 Statement stmt = testconn.createStatement();
 			 ResultSet rs = stmt.executeQuery(SQL)) {
+
 			// nothing to do
+			LOGGER.log(Level.FINE, "Connection successful!");
 
 		} catch (SQLException e) {
+
 			// nothing to do
 			LOGGER.log(Level.FINE, e.getMessage());
+
 		}
 
 	}
@@ -303,7 +302,7 @@ class Ringchart extends ApplicationFrame {
 	// Methode um Liste an Companies aus der Datenbank auszulesen
 	private static ArrayList<Company> readFromDatabase() {
 
-		ArrayList<Company> cl = new ArrayList<Company>();
+		ArrayList<Company> cl = new ArrayList<>();
 
 		// Daten auslesen
 		String selectSQL = "SELECT * FROM " + table + ";";
