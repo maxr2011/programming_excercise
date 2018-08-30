@@ -2,8 +2,7 @@ package charts.objects;
 
 public class Company {
 
-	private final String date;
-	private final String security;
+	private final String date, security;
 	private final double weighting;
 
 	public Company(String d, String s, double w) {

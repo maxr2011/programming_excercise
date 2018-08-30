@@ -40,7 +40,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("SameParameterValue")
-class Piechart extends ApplicationFrame {
+public class Piechart extends ApplicationFrame {
 
 	//Variablen
 
@@ -80,6 +80,7 @@ class Piechart extends ApplicationFrame {
 		setContentPane(cp);
 	}
 
+	// Dataset erzeugen
 	private static PieDataset createDataset(java.util.List<Country> cl) {
 		DefaultPieDataset dataset = new DefaultPieDataset();
 
@@ -90,6 +91,7 @@ class Piechart extends ApplicationFrame {
 		return dataset;
 	}
 
+	// Chart erzeugen
 	private static JFreeChart createChart(PieDataset dataset) {
 		JFreeChart chart = ChartFactory.createPieChart("ANTEIL AM FONDSVERMÖGEN",   // chart title
 				dataset,          // data
@@ -148,6 +150,7 @@ class Piechart extends ApplicationFrame {
 		return chart;
 	}
 
+	// Demopanel erzeugen
 	private static JPanel createDemoPanel() {
 		JFreeChart chart = createChart(createDataset(countries));
 
@@ -161,13 +164,13 @@ class Piechart extends ApplicationFrame {
 	}
 
 	//Methode um xls Datei einzulesen
-	private static ArrayList<Country> readXLSFile() {
+	public static ArrayList<Country> readXLSFile(String xls) {
 
 		ArrayList<Country> countries = new ArrayList<>();
 
 		try {
 
-			InputStream ExcelFileToRead = new FileInputStream(EXAMPLE_XLS_FILE);
+			InputStream ExcelFileToRead = new FileInputStream(xls);
 			HSSFWorkbook wb = new HSSFWorkbook(ExcelFileToRead);
 
 			HSSFSheet sheet = wb.getSheetAt(0);
@@ -409,7 +412,7 @@ class Piechart extends ApplicationFrame {
 		 */
 
 		// XLS einlesen -> Countries
-		ArrayList<Country> countriesXLS = readXLSFile();
+		ArrayList<Country> countriesXLS = readXLSFile(EXAMPLE_XLS_FILE);
 
 		// Daten in die Datenbank schrieben
 		writeDataToDatabase(countriesXLS);
