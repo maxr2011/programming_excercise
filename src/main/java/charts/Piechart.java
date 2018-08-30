@@ -15,6 +15,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PiePlot;
@@ -23,9 +24,12 @@ import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.Log;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -136,8 +140,11 @@ public class Piechart extends ApplicationFrame {
 	public static JPanel createDemoPanel(ArrayList<Country> cl) throws FileNotFoundException, DocumentException {
 		JFreeChart chart = createChart(createDataset(countries));
 
+		// PNG export
+		exportPNG(new File(PNG_FILE), chart, WIDTH, HEIGHT);
+
 		// PDF export
-		export(new File(PDF_FILE), chart, WIDTH, HEIGHT);
+		exportPDF(new File(PDF_FILE), chart, WIDTH, HEIGHT);
 
 		return new ChartPanel(chart);
 	}
@@ -292,9 +299,20 @@ public class Piechart extends ApplicationFrame {
 		return cl;
 	}
 
+	// Methode zum Speichern als PNG
+	public static void exportPNG(File name, JFreeChart chart, int x, int y) {
+		try {
+			ChartUtilities.saveChartAsPNG(name, chart, x, y);
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+
+	}
+
 	// Methode zum Exportieren als PDF
-	public static void export(File name, JFreeChart chart, int x, int y)
+	public static void exportPDF(File name, JFreeChart chart, int x, int y)
 			throws FileNotFoundException, DocumentException {
+
 		Rectangle pagesize = new Rectangle(x, y);
 		Document document = new Document(pagesize, 50, 50, 50, 50);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(name));
@@ -308,6 +326,7 @@ public class Piechart extends ApplicationFrame {
 		g2.dispose();
 		cb.addTemplate(tp, 0, 0);
 		document.close();
+
 	}
 
 	// Mainmethode

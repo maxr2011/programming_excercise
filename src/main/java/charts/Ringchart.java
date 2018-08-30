@@ -309,6 +309,8 @@ public class Ringchart extends ApplicationFrame {
 		return cl;
 	}
 
+	// Methode zum Exportieren als GIF
+
 	// Methode zum Exportieren als PDF
 	public static void export(File name, JFreeChart chart, int x, int y)
 			throws FileNotFoundException, DocumentException {
