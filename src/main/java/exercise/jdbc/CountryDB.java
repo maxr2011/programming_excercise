@@ -12,32 +12,6 @@ public class CountryDB {
 	//Tabellenname
 	private static final String table = "country_table";
 
-	// Methode um Liste an Countries aus der Datenbank auszulesen
-	public static ArrayList<Country> readFromDatabase() {
-
-		ArrayList<Country> cl = new ArrayList<>();
-
-		// Daten auslesen
-		String selectSQL = "SELECT * FROM " + table + ";";
-
-		try (Connection conn = database.JDBC.connect();
-			 Statement stmt = conn.createStatement();
-			 ResultSet rs = stmt.executeQuery(selectSQL)) {
-
-			while (rs.next()) {
-
-				cl.add(new Country(rs.getString("name"), rs.getDouble("weight")));
-
-			}
-
-		} catch (SQLException e) {
-			System.out.println("here");
-			e.printStackTrace();
-		}
-
-		return cl;
-	}
-
 	// Methode um ein Country hinzuzufügen
 	private static void insertCountry(Country c) {
 
@@ -69,6 +43,32 @@ public class CountryDB {
 			insertCountry(c);
 		}
 
+	}
+
+	// Methode um Liste an Countries aus der Datenbank auszulesen
+	public static ArrayList<Country> readFromDatabase() {
+
+		ArrayList<Country> cl = new ArrayList<>();
+
+		// Daten auslesen
+		String selectSQL = "SELECT * FROM " + table + ";";
+
+		try (Connection conn = database.JDBC.connect();
+			 Statement stmt = conn.createStatement();
+			 ResultSet rs = stmt.executeQuery(selectSQL)) {
+
+			while (rs.next()) {
+
+				cl.add(new Country(rs.getString("name"), rs.getDouble("weight")));
+
+			}
+
+		} catch (SQLException e) {
+			System.out.println("here");
+			e.printStackTrace();
+		}
+
+		return cl;
 	}
 
 }
