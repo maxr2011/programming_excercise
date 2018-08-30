@@ -1,7 +1,7 @@
 package exercise.chart;
 
-import exercise.output.GenerateOutputFiles;
 import exercise.objects.Country;
+import exercise.output.GenerateOutputFiles;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -94,16 +94,19 @@ public class Piechart extends ApplicationFrame {
 		int j = 0;
 
 		for (Country c : countries) {
+
+			// Sektionen Farbe
 			plot.setSectionPaint(c.getName(), colorlist.get(j++));
+
+			// Sektionen Outline Farbe
+			plot.setSectionOutlinePaint(c.getName(), Color.white);
+
 		}
 
 		plot.setSimpleLabels(true);
 
 		// Sektion hervorheben
-		//plot.setExplodePercent("Deutschland", 0.3);
-
-		// Sektionen Outline
-		plot.setSectionOutlinePaint(o -> 0, Color.white);
+		// plot.setExplodePercent("Deutschland", 0.3);
 
 		// Legende mit quadratischen Colorboxen
 		plot.setLegendItemShape(new java.awt.Rectangle(15, 15));
