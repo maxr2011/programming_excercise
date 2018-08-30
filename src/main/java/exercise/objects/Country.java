@@ -1,34 +1,38 @@
 package exercise.objects;
 
+import org.springframework.stereotype.Component;
+
+@Component("Country")
 public class Country {
 
-    private String name;
-    private double weight;
+	private String name;
+	private double weight;
 
-    public Country() {}
+	public Country() {
+	}
 
-    public Country(String n, double w){
-        this.name = n;
-        this.weight = w;
-    }
+	public Country(String n, double w) {
+		this.name = n;
+		this.weight = w;
+	}
 
-    public String getName(){
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Double getWeight(){
-        return weight;
-    }
+	public Double getWeight() {
+		return weight;
+	}
 
-    public boolean nameIsNull(){
-        return this.name == null;
-    }
+	public boolean nameIsNull() {
+		return this.name == null;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
+	public void setWeight(double weight) {
+		this.weight = weight;
+	}
 }

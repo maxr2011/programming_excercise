@@ -1,5 +1,8 @@
 package exercise.objects;
 
+import org.springframework.stereotype.Component;
+
+@Component("Company")
 public class Company {
 
 	private final String date, security;
