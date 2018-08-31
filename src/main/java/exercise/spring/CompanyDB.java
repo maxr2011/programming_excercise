@@ -1,15 +1,9 @@
 package exercise.spring;
 
 import exercise.objects.Company;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -20,22 +14,15 @@ public class CompanyDB {
 	//Tabellenname
 	private static final String table = "company_table";
 
-	private JdbcTemplate jdbcTemplate;
+	private final JdbcOperations jdbcTemplate;
 
-	@Autowired
-	public void setDataSource(DataSource dataSource) {this.jdbcTemplate = new JdbcTemplate(dataSource);}
+	public CompanyDB(JdbcOperations jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
 	//Liest Countries von der Datenbank aus
 	public List<Company> readFromDatabase() {
-		List<Company> cl = new ArrayList<>();
-		cl = this.jdbcTemplate.query("SELECT * FROM " + table + ";", new RowMapper<Company>() {
-			@Override
-			public Company mapRow(ResultSet rs, int i) throws SQLException {
-				Company c = new Company(rs.getString("Date"), rs.getString("Security"), rs.getDouble("Weighting"));
-				return c;
-			}
-		});
-		return cl;
+		return this.jdbcTemplate.query("SELECT * FROM " + table + ";", (rs, i) -> new Company(rs.getString("Date"), rs.getString("Security"), rs.getDouble("Weighting")));
 	}
 
 	//Schreibt ein Land in die Datenbank
