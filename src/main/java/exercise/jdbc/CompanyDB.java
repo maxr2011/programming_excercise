@@ -2,10 +2,12 @@ package exercise.jdbc;
 
 import database.JDBC;
 import exercise.objects.Company;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 
+@Component("CompanyDB")
 public class CompanyDB {
 
 	// Variablen

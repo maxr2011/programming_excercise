@@ -1,10 +1,12 @@
 package exercise.jdbc;
 
 import exercise.objects.Country;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 
+@Component("CountryDB")
 public class CountryDB {
 
 	//Variablen

@@ -18,7 +18,6 @@ public class JDBC {
     // Java Logger
     private static final Logger LOGGER = Logger.getLogger(Piechart.class.getName());
 
-
     // Datenbankverbindung aufbauen CountryDB
     public static Connection connect() {
         Connection conn = null;
