@@ -98,6 +98,10 @@ public class Piechart extends ApplicationFrame {
 
 		// Einfache Labels
 		plot.setSimpleLabels(true);
+		/* TODO
+		Labels überspringen
+		(nur Label 1-4 anzeigen)
+		 */
 		plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{2}"));
 
 		plot.setLabelBackgroundPaint(null);
@@ -128,6 +132,9 @@ public class Piechart extends ApplicationFrame {
 		// Legende mit quadratischen Colorboxen
 		plot.setLegendItemShape(new java.awt.Rectangle(17, 17));
 
+		/* TODO
+		Titel für Legende erstellen
+		 */
 		LegendTitle legendTitle = new LegendTitle(chart.getPlot());
 
 		// Legende
@@ -136,6 +143,10 @@ public class Piechart extends ApplicationFrame {
 		chart.getLegend().setPadding(new RectangleInsets(0.0, 50.0, 30.0, 0.0));
 
 		chart.getLegend().setItemFont(new Font("Arial", Font.PLAIN, 15));
+
+		/* TODO
+		Prozentzahlen in der Legende (auch im Ringchart)
+		 */
 
 		// chart.addSubtitle(new TextTitle("test"));
 
