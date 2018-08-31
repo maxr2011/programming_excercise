@@ -104,17 +104,11 @@ class SpringMain {
 
 		// Daten aus Tabelle auslesen und in Liste speichern
 		List<Country> countriesDB = countryDB.readFromDatabase();
-
-		// Daten ausgeben
-		for(Country c : countriesDB){
-			System.out.println(c.getName() + " " + c.getWeight());
-		}
-
-		// Daten sortieren
-		countriesDB = countriesDB.stream()
-							 .sorted(Comparator.comparing(Country::getWeight).reversed())
-							 .collect(Collectors.toList());
-
+								/*
+								.stream()
+							 	.sorted(Comparator.comparing(Country::getWeight).reversed())
+							 	.collect(Collectors.toList());
+								*/
 		// Piechart erstellen
 		Piechart demob = new Piechart("Countries", countriesDB);
 		demob.setSize(WIDTH, HEIGHT);

@@ -1,12 +1,10 @@
 package exercise.spring;
 
 import exercise.objects.Country;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,10 +18,11 @@ public class CountryDB {
 	//Tabellenname
 	private static final String table = "country_table";
 
-	private JdbcTemplate jdbcTemplate;
+	private final JdbcOperations jdbcTemplate;
 
-	@Autowired
-	public void setDataSource(DataSource dataSource) {this.jdbcTemplate = new JdbcTemplate(dataSource);}
+	public CountryDB(JdbcOperations jdbcOperations) {
+		this.jdbcTemplate = jdbcOperations;
+	}
 
 	//Liest Countries von der Datenbank aus
 	public List<Country> readFromDatabase() {

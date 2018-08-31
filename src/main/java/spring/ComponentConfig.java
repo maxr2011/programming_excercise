@@ -1,22 +1,21 @@
 package spring;
 
-import exercise.spring.CompanyDB;
-import exercise.spring.CountryDB;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
 @Configuration
+@ComponentScan(basePackages = {"exercise.spring", "database"})
 public class ComponentConfig {
 
 	@Bean
-	public CountryDB countryDB() {
-		return new CountryDB();
+	public JdbcOperations jdbcOperations(DataSource dataSource) {
+		return new JdbcTemplate(dataSource);
 	}
-
-	@Bean
-	public CompanyDB companyDB() { return new CompanyDB(); }
 
 	@Bean
 	public DataSource dataSourceJDBC() {

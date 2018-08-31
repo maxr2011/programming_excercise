@@ -6,6 +6,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
@@ -15,6 +17,7 @@ import org.jfree.ui.RectangleInsets;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +94,16 @@ public class Piechart extends ApplicationFrame {
 		colorlist.add(new Color(0xEEA615));
 		colorlist.add(new Color(0xF5C933));
 
+		// Einfache Labels
+		plot.setSimpleLabels(true);
+		plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{1} %"));
+
+		plot.setLabelBackgroundPaint(null);
+		plot.setLabelOutlinePaint(null);
+		plot.setLabelShadowPaint(null);
+		plot.setLabelPaint(Color.white);
+		plot.setLabelFont(new Font("Arial", Font.BOLD, 15));
+
 		int j = 0;
 
 		for (Country c : countries) {
@@ -103,18 +116,22 @@ public class Piechart extends ApplicationFrame {
 
 		}
 
-		plot.setSimpleLabels(true);
+
+
+		plot.setToolTipGenerator(new StandardPieToolTipGenerator("{0} = {2}", NumberFormat.getNumberInstance(), NumberFormat.getPercentInstance()));
 
 		// Sektion hervorheben
 		// plot.setExplodePercent("Deutschland", 0.3);
 
 		// Legende mit quadratischen Colorboxen
-		plot.setLegendItemShape(new java.awt.Rectangle(15, 15));
+		plot.setLegendItemShape(new java.awt.Rectangle(17, 17));
 
 		// Legende
 		chart.getLegend().setFrame(BlockBorder.NONE);
-		chart.getLegend().setItemLabelPadding(new RectangleInsets(5.0, 2.0, 10.0, 900.0));
-		chart.getLegend().setPadding(new RectangleInsets(10.0, 10.0, 0.0, 0.0));
+		chart.getLegend().setItemLabelPadding(new RectangleInsets(5.0, 7.0, 3.0, 900.0));
+		chart.getLegend().setPadding(new RectangleInsets(0.0, 50.0, 30.0, 0.0));
+
+		chart.getLegend().setItemFont(new Font("Arial", Font.PLAIN, 15));
 
 		return chart;
 	}
