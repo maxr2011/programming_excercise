@@ -1,5 +1,6 @@
 package spring;
 
+import exercise.spring.CompanyDB;
 import exercise.spring.CountryDB;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,9 @@ public class ComponentConfig {
 	public CountryDB countryDB() {
 		return new CountryDB();
 	}
+
+	@Bean
+	public CompanyDB companyDB() { return new CompanyDB(); }
 
 	@Bean
 	public DataSource dataSourceJDBC() {

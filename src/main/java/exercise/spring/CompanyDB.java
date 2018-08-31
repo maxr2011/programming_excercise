@@ -1,6 +1,6 @@
 package exercise.spring;
 
-import exercise.objects.Country;
+import exercise.objects.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class CountryDB {
+public class CompanyDB {
 
 	//Variablen
 
 	//Tabellenname
-	private static final String table = "country_table";
+	private static final String table = "company_table";
 
 	private JdbcTemplate jdbcTemplate;
 
@@ -26,12 +26,12 @@ public class CountryDB {
 	public void setDataSource(DataSource dataSource) {this.jdbcTemplate = new JdbcTemplate(dataSource);}
 
 	//Liest Countries von der Datenbank aus
-	public List<Country> readFromDatabase() {
-		List<Country> cl = new ArrayList<>();
-		cl = this.jdbcTemplate.query("SELECT * FROM " + table + ";", new RowMapper<Country>() {
+	public List<Company> readFromDatabase() {
+		List<Company> cl = new ArrayList<>();
+		cl = this.jdbcTemplate.query("SELECT * FROM " + table + ";", new RowMapper<Company>() {
 			@Override
-			public Country mapRow(ResultSet rs, int i) throws SQLException {
-				Country c = new Country(rs.getString(1), rs.getDouble(2));
+			public Company mapRow(ResultSet rs, int i) throws SQLException {
+				Company c = new Company(rs.getString("Date"), rs.getString("Security"), rs.getDouble("Weighting"));
 				return c;
 			}
 		});
@@ -39,15 +39,15 @@ public class CountryDB {
 	}
 
 	//Schreibt ein Land in die Datenbank
-	public int writeCountry(String name, double weight){
-		return jdbcTemplate.update("INSERT INTO " + table + "(name, weight) VALUES (?,?);", name, weight);
+	public int writeCompany(String date, String security, double weighting){
+		return jdbcTemplate.update("INSERT INTO " + table + "(date, security, weighting) VALUES (?,?,?);", date, security, weighting);
 	}
 
 	//Schreibt eine Liste an Ländern in die Datenbank
-	public void writeDataToDatabase(List<Country> cl){
-		jdbcTemplate.update("CREATE TABLE IF NOT EXISTS " + table + " (name varchar(40), weight float(53));");
-		for(Country c : cl){
-			this.writeCountry(c.getName(), c.getWeight());
+	public void writeDataToDatabase(List<Company> cl){
+		jdbcTemplate.update("CREATE TABLE IF NOT EXISTS " + table + " (date varchar(40), security varchar(100), weighting float(53));");
+		for(Company c : cl){
+			this.writeCompany(c.getDate(), c.getSecurity() ,c.getWeighting());
 		}
 	}
 

@@ -63,7 +63,7 @@ class Main {
 		// Daten von der Datenbank übergeben
 		ArrayList<Company> companiesDB = CompanyDB.readFromDatabase();
 
-		// Globale Variable
+		// Liste sortieren
 		List<Company> companies = companiesDB.stream()
 											 .sorted(Comparator.comparing(Company::getWeighting).reversed())
 											 .collect(Collectors.toList());
