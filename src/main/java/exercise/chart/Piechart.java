@@ -9,10 +9,12 @@ import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RectangleInsets;
+import org.jfree.util.UnitType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -96,13 +98,15 @@ public class Piechart extends ApplicationFrame {
 
 		// Einfache Labels
 		plot.setSimpleLabels(true);
-		plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{1} %"));
+		plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{2}"));
 
 		plot.setLabelBackgroundPaint(null);
 		plot.setLabelOutlinePaint(null);
 		plot.setLabelShadowPaint(null);
 		plot.setLabelPaint(Color.white);
 		plot.setLabelFont(new Font("Arial", Font.BOLD, 15));
+
+		plot.setSimpleLabelOffset(new RectangleInsets(UnitType.RELATIVE, 0.1, 0.1, 0.1, 0.1));
 
 		int j = 0;
 
@@ -116,8 +120,6 @@ public class Piechart extends ApplicationFrame {
 
 		}
 
-
-
 		plot.setToolTipGenerator(new StandardPieToolTipGenerator("{0} = {2}", NumberFormat.getNumberInstance(), NumberFormat.getPercentInstance()));
 
 		// Sektion hervorheben
@@ -126,12 +128,16 @@ public class Piechart extends ApplicationFrame {
 		// Legende mit quadratischen Colorboxen
 		plot.setLegendItemShape(new java.awt.Rectangle(17, 17));
 
+		LegendTitle legendTitle = new LegendTitle(chart.getPlot());
+
 		// Legende
 		chart.getLegend().setFrame(BlockBorder.NONE);
 		chart.getLegend().setItemLabelPadding(new RectangleInsets(5.0, 7.0, 3.0, 900.0));
 		chart.getLegend().setPadding(new RectangleInsets(0.0, 50.0, 30.0, 0.0));
 
 		chart.getLegend().setItemFont(new Font("Arial", Font.PLAIN, 15));
+
+		// chart.addSubtitle(new TextTitle("test"));
 
 		return chart;
 	}

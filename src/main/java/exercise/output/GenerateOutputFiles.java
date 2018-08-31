@@ -48,6 +48,10 @@ public class GenerateOutputFiles {
 
 	}
 
+	/* TODO
+	Exportieren als SVG Datei
+	 */
+
 	// Methode zum Exportieren als PDF
 	public static void exportPDF(File name, JFreeChart chart, int x, int y) {
 
