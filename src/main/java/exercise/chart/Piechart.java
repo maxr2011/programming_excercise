@@ -9,7 +9,6 @@ import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.PiePlot;
-import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
 import org.jfree.ui.ApplicationFrame;
@@ -135,7 +134,7 @@ public class Piechart extends ApplicationFrame {
 		/* TODO
 		Titel für Legende erstellen
 		 */
-		LegendTitle legendTitle = new LegendTitle(chart.getPlot());
+		//LegendTitle legendTitle = new LegendTitle(chart.getPlot());
 
 		// Legende
 		chart.getLegend().setFrame(BlockBorder.NONE);

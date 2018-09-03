@@ -5,7 +5,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import java.util.Arrays;
 
-public class Main {
+class Main {
 
 	// Liest alle Beans aus
 	public static void main(String[] args) {

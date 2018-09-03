@@ -2,12 +2,8 @@ package exercise.spring;
 
 import exercise.objects.Country;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -26,20 +22,13 @@ public class CountryDB {
 
 	//Liest Countries von der Datenbank aus
 	public List<Country> readFromDatabase() {
-		List<Country> cl = new ArrayList<>();
-		cl = this.jdbcTemplate.query("SELECT * FROM " + table + ";", new RowMapper<Country>() {
-			@Override
-			public Country mapRow(ResultSet rs, int i) throws SQLException {
-				Country c = new Country(rs.getString(1), rs.getDouble(2));
-				return c;
-			}
-		});
-		return cl;
+		return this.jdbcTemplate.query("SELECT * FROM " + table + ";",
+				(rs, i) -> new Country(rs.getString(1), rs.getDouble(2)));
 	}
 
 	//Schreibt ein Land in die Datenbank
-	public int writeCountry(String name, double weight){
-		return jdbcTemplate.update("INSERT INTO " + table + "(name, weight) VALUES (?,?);", name, weight);
+	private void writeCountry(String name, double weight){
+		jdbcTemplate.update("INSERT INTO " + table + "(name, weight) VALUES (?,?);", name, weight);
 	}
 
 	//Schreibt eine Liste an Ländern in die Datenbank
@@ -55,9 +44,11 @@ public class CountryDB {
 		jdbcTemplate.update("DELETE FROM " + table + ";");
 	}
 
-	//Löscht die Tabelle
-	public void dropTable(){
-		jdbcTemplate.update("DROP TABLE " + table + ";");
-	}
+// --Commented out by Inspection START (03.09.18 08:56):
+//	//Löscht die Tabelle
+//	public void dropTable(){
+//		jdbcTemplate.update("DROP TABLE " + table + ";");
+//	}
+// --Commented out by Inspection STOP (03.09.18 08:56)
 
 }

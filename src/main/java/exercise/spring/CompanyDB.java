@@ -26,8 +26,9 @@ public class CompanyDB {
 	}
 
 	//Schreibt ein Land in die Datenbank
-	public int writeCompany(String date, String security, double weighting){
-		return jdbcTemplate.update("INSERT INTO " + table + "(date, security, weighting) VALUES (?,?,?);", date, security, weighting);
+	private void writeCompany(String date, String security, double weighting){
+		jdbcTemplate.update("INSERT INTO " + table + "(date, security, weighting) VALUES (?,?,?);", date, security,
+				weighting);
 	}
 
 	//Schreibt eine Liste an Ländern in die Datenbank
@@ -43,9 +44,11 @@ public class CompanyDB {
 		jdbcTemplate.update("DELETE FROM " + table + ";");
 	}
 
-	//Löscht die Tabelle
-	public void dropTable(){
-		jdbcTemplate.update("DROP TABLE " + table + ";");
-	}
+// --Commented out by Inspection START (03.09.18 08:56):
+//	//Löscht die Tabelle
+//	public void dropTable(){
+//		jdbcTemplate.update("DROP TABLE " + table + ";");
+//	}
+// --Commented out by Inspection STOP (03.09.18 08:56)
 
 }
