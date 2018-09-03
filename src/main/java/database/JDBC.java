@@ -18,7 +18,7 @@ public class JDBC {
     // Java Logger
     private static final Logger LOGGER = Logger.getLogger(Piechart.class.getName());
 
-    // Datenbankverbindung aufbauen CountryDB
+    // Datenbankverbindung aufbauen Allgemein
     public static Connection connect() {
         Connection conn = null;
         try {
@@ -31,7 +31,7 @@ public class JDBC {
         return conn;
     }
 
-    // Hilfsmethode für CountryDB
+    // Hilfsmethode um eine einfache Abfrage zu machen ohne Rückgabewert
     public static void minimalQuery(String SQL) {
 
         try (Connection testconn = connect();
