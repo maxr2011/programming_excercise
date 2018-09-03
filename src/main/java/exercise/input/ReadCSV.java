@@ -14,10 +14,10 @@ public class ReadCSV {
 
 
 	//CSV Datei einlesen
-	public static List<Object> readCsvFile(String fileName, String[] headerMapping) {
+	public static List<Company> readCsvFile(String fileName, String[] headerMapping) {
 
 		// Liste erstellen
-		List<Object> companies = new ArrayList<>();
+		List<Company> companies = new ArrayList<>();
 
 		FileReader fileReader = null;
 

@@ -12,7 +12,6 @@ import exercise.objects.Country;
 import exercise.output.GenerateOutputFiles;
 import org.jfree.ui.RefineryUtilities;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,13 +54,13 @@ class Main {
 		JDBC.clearTable("company_table");
 
 		// CSV einlesen -> Companies
-		List<Object> companiesCSV = ReadCSV.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
+		List<Company> companiesCSV = ReadCSV.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
 
 		// Daten in die Datenbank schreiben
 		CompanyDB.writeDataToDatabase(companiesCSV);
 
 		// Daten von der Datenbank übergeben
-		ArrayList<Company> companiesDB = CompanyDB.readFromDatabase();
+		List<Company> companiesDB = CompanyDB.readFromDatabase();
 
 		// Liste sortieren
 		List<Company> companies = companiesDB.stream()
@@ -109,7 +108,7 @@ class Main {
 		JDBC.clearTable("country_table");
 
 		// XLS einlesen -> Countries
-		List<Object> countriesXLS = ReadXLS.readXLSFile(EXAMPLE_XLS_FILE);
+		List<Country> countriesXLS = ReadXLS.readXLSFile(EXAMPLE_XLS_FILE);
 
 		// Daten in die Datenbank schrieben
 		CountryDB.writeDataToDatabase(countriesXLS);
@@ -119,10 +118,10 @@ class Main {
 		//Variablen
 		List<Country> countries = CountryDB.readFromDatabase();
 
-		// Daten sortieren
-		countries = countries.stream()
-							 .sorted(Comparator.comparing(Country::getWeight).reversed())
-							 .collect(Collectors.toList());
+//		// Daten sortieren
+//		countries = countries.stream()
+//							 .sorted(Comparator.comparing(Country::getWeight).reversed())
+//							 .collect(Collectors.toList());
 
 		hundred_check = 0.0;
 

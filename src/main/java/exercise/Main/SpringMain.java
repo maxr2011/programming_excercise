@@ -57,9 +57,9 @@ class SpringMain {
 		 * Als GIF, PDF exportieren
 		 */
 
-		List<Object> companies = ReadCSV.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
+		List<Company> companies = ReadCSV.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
 
-		DBInterface companyDB = (CompanyDB) context.getBean("companyDB");
+		DBInterface<Company> companyDB = (CompanyDB) context.getBean("companyDB");
 
 		// Tabelle leeren
 		companyDB.clearTable();
@@ -68,7 +68,7 @@ class SpringMain {
 		companyDB.writeDataToDatabase(companies);
 
 		// Daten aus der Datenbank auslesen
-		List<Company> companiesDB = ((List<Company>) (List<?>) companyDB.readFromDatabase()).stream()
+		List<Company> companiesDB = companyDB.readFromDatabase().stream()
 											 .sorted(Comparator.comparing(Company::getWeighting).reversed())
 											 .collect(Collectors.toList());
 
@@ -92,9 +92,9 @@ class SpringMain {
 
 		// Liste einlesen aus der Datei
 		// Variables
-		List<Object> countries = ReadXLS.readXLSFile(EXAMPLE_XLS_FILE);
+		List<Country> countries = ReadXLS.readXLSFile(EXAMPLE_XLS_FILE);
 
-		DBInterface countryDB = (CountryDB) context.getBean("countryDB");
+		DBInterface<Country> countryDB = (CountryDB) context.getBean("countryDB");
 
 		// Tabelle leeren
 		countryDB.clearTable();
@@ -103,7 +103,7 @@ class SpringMain {
 		countryDB.writeDataToDatabase(countries);
 
 		// Daten aus Tabelle auslesen und in Liste speichern (mit Cast zu List<Country)
-		List<Country> countriesDB = (List<Country>) (List<?>) countryDB.readFromDatabase();
+		List<Country> countriesDB = countryDB.readFromDatabase();
 								// Würde die Liste sortieren (brauchen wir hier jedoch nicht)
 								/*
 								.stream()

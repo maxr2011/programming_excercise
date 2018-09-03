@@ -2,15 +2,15 @@ package exercise.spring;
 
 import java.util.List;
 
-public interface DBInterface {
+public interface DBInterface<E> {
 
 	// Tabelle leeren
 	void clearTable();
 
 	// Daten von Datenbank auslesen
-	List<Object> readFromDatabase();
+	List<E> readFromDatabase();
 
 	// Daten in die Datenbank schreiben
-	void writeDataToDatabase(List<Object> l);
+	void writeDataToDatabase(List<E> l);
 
 }

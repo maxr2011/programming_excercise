@@ -18,9 +18,9 @@ import java.util.List;
 public class ReadXLS {
 
 	//Methode um xls Datei einzulesen
-	public static List<Object> readXLSFile(String xls) {
+	public static List<Country> readXLSFile(String xls) {
 
-		List<Object> countries = new ArrayList<>();
+		List<Country> countries = new ArrayList<>();
 
 		try (InputStream ExcelFileToRead = new FileInputStream(xls);
 			 HSSFWorkbook wb = new HSSFWorkbook(ExcelFileToRead)) {

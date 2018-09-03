@@ -36,8 +36,8 @@ public class CompanyDB {
 
 	}
 
-	// Methode um Liste an Countries in Datenbank zu schreiben (CountryDB)
-	public static void writeDataToDatabase(List<Object> cl) {
+	// Methode um Liste an Companies in Datenbank zu schreiben (CompanyDB)
+	public static void writeDataToDatabase(List<Company> cl) {
 
 		// Tabelle erstellen falls nicht existiert
 		String createSQL = "CREATE TABLE IF NOT EXISTS " + table
@@ -45,16 +45,16 @@ public class CompanyDB {
 		JDBC.minimalQuery(createSQL);
 
 		// Company Liste in Datenbanktabelle schreiben
-		for (Object c : cl) {
-			insertCompany((Company) c);
+		for (Company c : cl) {
+			insertCompany(c);
 		}
 
 	}
 
 	// Methode um Liste an Companies aus der Datenbank auszulesen
-	public static ArrayList<Company> readFromDatabase() {
+	public static List<Company> readFromDatabase() {
 
-		ArrayList<Company> cl = new ArrayList<>();
+		List<Company> cl = new ArrayList<>();
 
 		// Daten auslesen
 		String selectSQL = "SELECT * FROM " + table + ";";

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class CompanyDB implements DBInterface {
+public class CompanyDB implements DBInterface<Company> {
 
 	//Variablen
 
@@ -21,7 +21,7 @@ public class CompanyDB implements DBInterface {
 	}
 
 	//Liest Countries von der Datenbank aus
-	public List<Object> readFromDatabase() {
+	public List<Company> readFromDatabase() {
 		return this.jdbcTemplate.query("SELECT * FROM " + table + ";", (rs, i) -> new Company(rs.getString("Date"), rs.getString("Security"), rs.getDouble("Weighting")));
 	}
 
@@ -32,10 +32,9 @@ public class CompanyDB implements DBInterface {
 	}
 
 	//Schreibt eine Liste an Ländern in die Datenbank
-	public void writeDataToDatabase(List<Object> cl){
+	public void writeDataToDatabase(List<Company> cl){
 		jdbcTemplate.update("CREATE TABLE IF NOT EXISTS " + table + " (date varchar(40), security varchar(100), weighting float(53));");
-		for(Object ce : cl){
-			Company c = (Company) ce;
+		for(Company c : cl){
 			this.writeCompany(c.getDate(), c.getSecurity() ,c.getWeighting());
 		}
 	}
