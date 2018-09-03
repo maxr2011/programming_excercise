@@ -1,4 +1,4 @@
-package spring;
+package springconfiguration;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
