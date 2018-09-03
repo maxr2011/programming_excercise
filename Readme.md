@@ -1,7 +1,7 @@
 //JDBC Solution
-Run /src/main/java/exercise/Main/Main
+Run /programming_excercise/src/main/java/exercise/Main/Main.java
 -> Main method
 
 //Spring Solution
-Run /src/main/java/exercise/Main/SpringMain
+Run /programming_excercise/src/main/java/exercise/Main/SpringMain.java
 -> Main method
