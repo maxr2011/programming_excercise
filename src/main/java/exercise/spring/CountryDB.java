@@ -21,7 +21,7 @@ public class CountryDB implements DBInterface {
 	}
 
 	//Liest Countries von der Datenbank aus
-	public List<Country> readFromDatabase() {
+	public List<Object> readFromDatabase() {
 		return this.jdbcTemplate.query("SELECT * FROM " + table + ";",
 				(rs, i) -> new Country(rs.getString(1), rs.getDouble(2)));
 	}
@@ -32,9 +32,10 @@ public class CountryDB implements DBInterface {
 	}
 
 	//Schreibt eine Liste an Ländern in die Datenbank
-	public void writeDataToDatabase(List<Country> cl){
+	public void writeDataToDatabase(List<Object> cl){
 		jdbcTemplate.update("CREATE TABLE IF NOT EXISTS " + table + " (name varchar(40), weight float(53));");
-		for(Country c : cl){
+		for(Object ce : cl){
+			Country c = (Country) ce;
 			this.writeCountry(c.getName(), c.getWeight());
 		}
 	}

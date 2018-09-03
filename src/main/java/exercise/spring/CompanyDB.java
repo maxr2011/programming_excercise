@@ -21,7 +21,7 @@ public class CompanyDB implements DBInterface {
 	}
 
 	//Liest Countries von der Datenbank aus
-	public List<Company> readFromDatabase() {
+	public List<Object> readFromDatabase() {
 		return this.jdbcTemplate.query("SELECT * FROM " + table + ";", (rs, i) -> new Company(rs.getString("Date"), rs.getString("Security"), rs.getDouble("Weighting")));
 	}
 
@@ -32,9 +32,10 @@ public class CompanyDB implements DBInterface {
 	}
 
 	//Schreibt eine Liste an Ländern in die Datenbank
-	public void writeDataToDatabase(List<Company> cl){
+	public void writeDataToDatabase(List<Object> cl){
 		jdbcTemplate.update("CREATE TABLE IF NOT EXISTS " + table + " (date varchar(40), security varchar(100), weighting float(53));");
-		for(Company c : cl){
+		for(Object ce : cl){
+			Company c = (Company) ce;
 			this.writeCompany(c.getDate(), c.getSecurity() ,c.getWeighting());
 		}
 	}

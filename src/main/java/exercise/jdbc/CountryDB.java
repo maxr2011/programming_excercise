@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component("CountryDB")
 public class CountryDB {
@@ -34,15 +35,15 @@ public class CountryDB {
 	}
 
 	// Methode um Liste an Countries in Datenbank zu schreiben (CountryDB)
-	public static void writeDataToDatabase(ArrayList<Country> cl) {
+	public static void writeDataToDatabase(List<Object> cl) {
 
 		// Tabelle erstellen falls nicht existiert
 		String createSQL = "CREATE TABLE IF NOT EXISTS " + table + " (name varchar(40), weight float(53));";
 		database.JDBC.minimalQuery(createSQL);
 
 		// Country Liste in Datenbanktabelle schreiben
-		for (Country c : cl) {
-			insertCountry(c);
+		for (Object c : cl) {
+			insertCountry((Country) c);
 		}
 
 	}

@@ -8,9 +8,9 @@ public interface DBInterface {
 	void clearTable();
 
 	// Daten von Datenbank auslesen
-	List readFromDatabase();
+	List<Object> readFromDatabase();
 
 	// Daten in die Datenbank schreiben
-	//void writeDataToDatabase(List<Object> l);
+	void writeDataToDatabase(List<Object> l);
 
 }

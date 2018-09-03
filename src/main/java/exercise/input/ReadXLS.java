@@ -13,13 +13,14 @@ import java.io.InputStream;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class ReadXLS {
 
 	//Methode um xls Datei einzulesen
-	public static ArrayList<Country> readXLSFile(String xls) {
+	public static List<Object> readXLSFile(String xls) {
 
-		ArrayList<Country> countries = new ArrayList<>();
+		List<Object> countries = new ArrayList<>();
 
 		try (InputStream ExcelFileToRead = new FileInputStream(xls);
 			 HSSFWorkbook wb = new HSSFWorkbook(ExcelFileToRead)) {
@@ -77,7 +78,6 @@ public class ReadXLS {
 			// IOException abfangen
 			e.printStackTrace();
 		}
-
 
 		return countries;
 

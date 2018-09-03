@@ -55,7 +55,7 @@ class Main {
 		JDBC.clearTable("company_table");
 
 		// CSV einlesen -> Companies
-		ArrayList<Company> companiesCSV = ReadCSV.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
+		List<Object> companiesCSV = ReadCSV.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
 
 		// Daten in die Datenbank schreiben
 		CompanyDB.writeDataToDatabase(companiesCSV);
@@ -109,7 +109,7 @@ class Main {
 		JDBC.clearTable("country_table");
 
 		// XLS einlesen -> Countries
-		ArrayList<Country> countriesXLS = ReadXLS.readXLSFile(EXAMPLE_XLS_FILE);
+		List<Object> countriesXLS = ReadXLS.readXLSFile(EXAMPLE_XLS_FILE);
 
 		// Daten in die Datenbank schrieben
 		CountryDB.writeDataToDatabase(countriesXLS);

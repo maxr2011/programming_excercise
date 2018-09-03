@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component("CompanyDB")
 public class CompanyDB {
@@ -36,7 +37,7 @@ public class CompanyDB {
 	}
 
 	// Methode um Liste an Countries in Datenbank zu schreiben (CountryDB)
-	public static void writeDataToDatabase(ArrayList<Company> cl) {
+	public static void writeDataToDatabase(List<Object> cl) {
 
 		// Tabelle erstellen falls nicht existiert
 		String createSQL = "CREATE TABLE IF NOT EXISTS " + table
@@ -44,8 +45,8 @@ public class CompanyDB {
 		JDBC.minimalQuery(createSQL);
 
 		// Company Liste in Datenbanktabelle schreiben
-		for (Company c : cl) {
-			insertCompany(c);
+		for (Object c : cl) {
+			insertCompany((Company) c);
 		}
 
 	}

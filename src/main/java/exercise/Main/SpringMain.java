@@ -9,6 +9,7 @@ import exercise.objects.Country;
 import exercise.output.GenerateOutputFiles;
 import exercise.spring.CompanyDB;
 import exercise.spring.CountryDB;
+import exercise.spring.DBInterface;
 import org.jfree.ui.RefineryUtilities;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -55,9 +56,9 @@ class SpringMain {
 		 * Als GIF, PDF exportieren
 		 */
 
-		ArrayList<Company> companies = ReadCSV.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
+		List<Object> companies = ReadCSV.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
 
-		CompanyDB companyDB = (CompanyDB) context.getBean("companyDB");
+		DBInterface companyDB = (CompanyDB) context.getBean("companyDB");
 
 		// Tabelle leeren
 		companyDB.clearTable();
@@ -66,13 +67,22 @@ class SpringMain {
 		companyDB.writeDataToDatabase(companies);
 
 		// Daten aus der Datenbank auslesen
-		List<Company> companiesDB = companyDB.readFromDatabase()
+		List<Object> companiesDB = companyDB.readFromDatabase();
+
+		// Liste casten
+		List<Company> companyCastList = new ArrayList<>();
+
+		for(Object o : companiesDB) {
+			companyCastList.add((Company) o);
+		}
+
+		companyCastList = companyCastList
 											 .stream()
 											 .sorted(Comparator.comparing(Company::getWeighting).reversed())
 											 .collect(Collectors.toList());
 
 		// Ringchart erstellen
-		Ringchart demoa = new Ringchart("Companies", companiesDB);
+		Ringchart demoa = new Ringchart("Companies", companyCastList);
 		demoa.pack();
 		RefineryUtilities.centerFrameOnScreen(demoa);
 		demoa.setVisible(true);
@@ -91,10 +101,9 @@ class SpringMain {
 
 		// Liste einlesen aus der Datei
 		// Variables
-		ArrayList<Country> countries = ReadXLS.readXLSFile(EXAMPLE_XLS_FILE);
+		List<Object> countries = ReadXLS.readXLSFile(EXAMPLE_XLS_FILE);
 
-
-		CountryDB countryDB = (CountryDB) context.getBean("countryDB");
+		DBInterface countryDB = (CountryDB) context.getBean("countryDB");
 
 		// Tabelle leeren
 		countryDB.clearTable();
@@ -103,14 +112,24 @@ class SpringMain {
 		countryDB.writeDataToDatabase(countries);
 
 		// Daten aus Tabelle auslesen und in Liste speichern
-		List<Country> countriesDB = countryDB.readFromDatabase();
+		List<Object> countriesDB = countryDB.readFromDatabase();
+								// Würde die Liste sortieren (brauchen wir hier jedoch nicht)
 								/*
 								.stream()
 							 	.sorted(Comparator.comparing(Country::getWeight).reversed())
 							 	.collect(Collectors.toList());
 								*/
+
+
+		// Liste casten
+		List<Country> countryCastList = new ArrayList<>();
+
+		for(Object o : countriesDB) {
+			countryCastList.add((Country) o);
+		}
+
 		// Piechart erstellen
-		Piechart demob = new Piechart("Countries", countriesDB);
+		Piechart demob = new Piechart("Countries", countryCastList);
 		demob.setSize(WIDTH, HEIGHT);
 		RefineryUtilities.centerFrameOnScreen(demob);
 		demob.setVisible(true);
