@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("SameParameterValue")
-public class Ringchart extends ApplicationFrame {
+public class Ringchart extends ApplicationFrame implements Chart {
 
 	//Variablen
 	private static List<Company> companies;

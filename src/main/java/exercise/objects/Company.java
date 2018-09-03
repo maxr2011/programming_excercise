@@ -1,6 +1,6 @@
 package exercise.objects;
 
-public class Company {
+public class Company implements Element {
 
 	private final String date, security;
 	private final double weighting;

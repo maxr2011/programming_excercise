@@ -24,7 +24,7 @@ import java.util.List;
 
 // Gleicher Übergabewert, es wird vorgeschlagen die Werte zu hardcoden
 @SuppressWarnings("SameParameterValue")
-public class Piechart extends ApplicationFrame {
+public class Piechart extends ApplicationFrame implements Chart {
 
 	//Variablen
 	private static List<Country> countries = new ArrayList<>();

@@ -1,6 +1,6 @@
 package exercise.objects;
 
-public class Country {
+public class Country implements Element {
 
 	private String name;
 	private double weight;

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class CompanyDB {
+public class CompanyDB implements DBInterface {
 
 	//Variablen
 
