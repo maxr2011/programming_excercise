@@ -20,18 +20,18 @@ public class CompanyDB implements DBInterface<Company> {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	//Liest Countries von der Datenbank aus
+	//Liest Companies von der Datenbank aus
 	public List<Company> readFromDatabase() {
 		return this.jdbcTemplate.query("SELECT * FROM " + table + ";", (rs, i) -> new Company(rs.getString("Date"), rs.getString("Security"), rs.getDouble("Weighting")));
 	}
 
-	//Schreibt ein Land in die Datenbank
+	//Schreibt eine Company in die Datenbank
 	private void writeCompany(String date, String security, double weighting){
 		jdbcTemplate.update("INSERT INTO " + table + "(date, security, weighting) VALUES (?,?,?);", date, security,
 				weighting);
 	}
 
-	//Schreibt eine Liste an Ländern in die Datenbank
+	//Schreibt eine Liste an Companies in die Datenbank
 	public void writeDataToDatabase(List<Company> cl){
 		jdbcTemplate.update("CREATE TABLE IF NOT EXISTS " + table + " (date varchar(40), security varchar(100), weighting float(53));");
 		for(Company c : cl){
