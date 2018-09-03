@@ -1,9 +1,24 @@
 package exercise.objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="company_table")
 public class Company implements Element {
 
-	private final String date, security;
-	private final double weighting;
+	@Id
+	@GeneratedValue
+	private Long id;
+
+	private String date, security;
+	private double weighting;
+
+	public Company(){
+
+	}
 
 	public Company(String d, String s, double w) {
 
