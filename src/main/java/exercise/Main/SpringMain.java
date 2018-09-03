@@ -15,11 +15,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring.ComponentConfig;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// Unchecked Cast wirft keine Warnung mehr
+@SuppressWarnings("unchecked")
 class SpringMain {
 
 	//Variablen
@@ -67,22 +68,12 @@ class SpringMain {
 		companyDB.writeDataToDatabase(companies);
 
 		// Daten aus der Datenbank auslesen
-		List<Object> companiesDB = companyDB.readFromDatabase();
-
-		// Liste casten
-		List<Company> companyCastList = new ArrayList<>();
-
-		for(Object o : companiesDB) {
-			companyCastList.add((Company) o);
-		}
-
-		companyCastList = companyCastList
-											 .stream()
+		List<Company> companiesDB = ((List<Company>) (List<?>) companyDB.readFromDatabase()).stream()
 											 .sorted(Comparator.comparing(Company::getWeighting).reversed())
 											 .collect(Collectors.toList());
 
 		// Ringchart erstellen
-		Ringchart demoa = new Ringchart("Companies", companyCastList);
+		Ringchart demoa = new Ringchart("Companies", companiesDB);
 		demoa.pack();
 		RefineryUtilities.centerFrameOnScreen(demoa);
 		demoa.setVisible(true);
@@ -111,8 +102,8 @@ class SpringMain {
 		// Daten in die Tabelle schreiben
 		countryDB.writeDataToDatabase(countries);
 
-		// Daten aus Tabelle auslesen und in Liste speichern
-		List<Object> countriesDB = countryDB.readFromDatabase();
+		// Daten aus Tabelle auslesen und in Liste speichern (mit Cast zu List<Country)
+		List<Country> countriesDB = (List<Country>) (List<?>) countryDB.readFromDatabase();
 								// Würde die Liste sortieren (brauchen wir hier jedoch nicht)
 								/*
 								.stream()
@@ -120,16 +111,8 @@ class SpringMain {
 							 	.collect(Collectors.toList());
 								*/
 
-
-		// Liste casten
-		List<Country> countryCastList = new ArrayList<>();
-
-		for(Object o : countriesDB) {
-			countryCastList.add((Country) o);
-		}
-
 		// Piechart erstellen
-		Piechart demob = new Piechart("Countries", countryCastList);
+		Piechart demob = new Piechart("Countries", countriesDB);
 		demob.setSize(WIDTH, HEIGHT);
 		RefineryUtilities.centerFrameOnScreen(demob);
 		demob.setVisible(true);
