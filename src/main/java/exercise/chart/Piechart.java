@@ -149,7 +149,7 @@ public class Piechart extends ApplicationFrame implements Chart {
 		// Prozentzahlen in der Legende
 		plot.setLegendLabelGenerator(new StandardPieSectionLabelGenerator("{0} {2}"));
 
-		// chart.addSubtitle(new TextTitle("test"));
+		//chart.addSubtitle(new TextTitle("test"));
 
 		return chart;
 	}
