@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import springconfiguration.DataSourceConfiguration;
+import spring_config.DataSourceConfiguration;
 
 import javax.sql.DataSource;
 

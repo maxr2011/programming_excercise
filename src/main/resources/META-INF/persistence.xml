@@ -31,4 +31,23 @@
 
     </persistence-unit>
 
+    <persistence-unit name="exercisePU" >
+
+        <class>exercise.objects.Company</class>
+        <class>exercise.objects.Country</class>
+
+        <properties>
+
+            <property name="javax.persistence.schema-generation.database.action"
+                      value="drop-and-create" />
+
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/exercise" />
+            <property name="javax.persistence.jdbc.user" value="mare" />
+            <property name="javax.persistence.jdbc.password" value="toor" />
+
+        </properties>
+
+    </persistence-unit>
+
 </persistence>

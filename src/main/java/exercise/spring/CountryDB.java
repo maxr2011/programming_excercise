@@ -4,9 +4,11 @@ import exercise.objects.Country;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class CountryDB implements DBInterface<Country> {
 
 	//Variablen

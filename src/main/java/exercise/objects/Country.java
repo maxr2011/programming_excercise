@@ -1,6 +1,17 @@
 package exercise.objects;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="country_table")
 public class Country implements Element {
+
+	@Id
+	@GeneratedValue
+	private Long id;
 
 	private String name;
 	private double weight;

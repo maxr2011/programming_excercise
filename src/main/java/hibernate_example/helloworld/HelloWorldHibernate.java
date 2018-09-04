@@ -20,11 +20,16 @@ public class HelloWorldHibernate {
 		m.setText("Test");
 		m.setRecipient("anevis Solutions");
 
+		Message n = new Message();
+		n.setText("Hallo");
+		n.setRecipient("Weihnachtsmann");
+
 		Session s =  sessionFactory.getCurrentSession();
 
 		final Transaction transaction = s.beginTransaction();
 
 		s.save(m);
+		s.save(n);
 
 		transaction.commit();
 
@@ -33,7 +38,7 @@ public class HelloWorldHibernate {
 		final Transaction t2 = s.beginTransaction();
 
 		final Criteria criteria = s.createCriteria(Message.class);
-		Message m1 = (Message) criteria.uniqueResult();
+		Message m1 = (Message) criteria.list().get(1);
 
 		System.out.println(m1.getRecipient());
 
