@@ -17,3 +17,13 @@ Run /programming_excercise/src/main/java/exercise/Main/SpringHibernateMain.java
 //1b) Spring Hibernate JPARepo Solution <br />
 Run /programming_excercise/src/main/java/exercise/Main/SpringHibernateJPARepoMain.java
 -> Main method
+
+// Streams Exercise <br />
+Run /programming_excercise/src/main/java/streams/Main.java
+-> Main method
+
+// JMS Excercise <br />
+Run /programming_excercise/src/main/java/jms_example/Receiver.java
+-> Main method
+Run /programming_excercise/src/main/java/jms_example/Sender.java
+-> Main method
