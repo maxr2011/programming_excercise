@@ -1,6 +1,5 @@
 package hibernate_example.helloworld;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -34,15 +33,6 @@ class HelloWorldHibernate {
 		transaction.commit();
 
 		s = sessionFactory.getCurrentSession();
-
-		final Transaction t2 = s.beginTransaction();
-
-		final Criteria criteria = s.createCriteria(Message.class);
-		Message m1 = (Message) criteria.list().get(1);
-
-		System.out.println(m1.getRecipient());
-
-		t2.commit();
 
 		s.close();
 

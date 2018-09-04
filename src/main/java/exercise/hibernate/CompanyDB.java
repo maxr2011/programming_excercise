@@ -1,10 +1,10 @@
 package exercise.hibernate;
 
 import exercise.objects.Company;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 public class CompanyDB {
@@ -25,11 +25,14 @@ public class CompanyDB {
 	public List<Company> readFromDatabase(Session s){
 
 		final Transaction transaction = s.beginTransaction();
-		final Criteria criteria = s.createCriteria(Company.class);
-		List<Company> cl = criteria.list();
+
+		CriteriaQuery<Company> cq = s.getCriteriaBuilder().createQuery(Company.class);
+		cq.from(Company.class);
+		List<Company> companies = s.createQuery(cq).getResultList();
+
 		transaction.commit();
 		s.close();
-		return cl;
+		return companies;
 
 	}
 
