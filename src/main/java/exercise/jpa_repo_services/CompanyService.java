@@ -13,8 +13,12 @@ import java.util.List;
 @Repository
 public class CompanyService {
 
+	private final CompanyRepository companyRepository;
+
 	@Autowired
-	private CompanyRepository companyRepository;
+	public CompanyService(CompanyRepository companyRepository) {
+		this.companyRepository = companyRepository;
+	}
 
 	@Transactional
 	public void writeDataToDatabase(List<Company> companyList){

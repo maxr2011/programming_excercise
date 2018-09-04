@@ -13,8 +13,12 @@ import java.util.List;
 @Repository
 public class CountryService {
 
+	private final CountryRepository countryRepository;
+
 	@Autowired
-	private CountryRepository countryRepository;
+	public CountryService(CountryRepository countryRepository) {
+		this.countryRepository = countryRepository;
+	}
 
 	@Transactional
 	public void writeDataToDatabase(List<Country> companyList){
