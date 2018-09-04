@@ -29,6 +29,10 @@
         <property name="hbm2ddl.auto">create</property>
 
         <!-- Names the annotated entity class-->
+        <mapping class="exercise.objects.Company" />
+        <mapping class="exercise.objects.Country" />
+
+        <!-- HelloWorld -->
         <mapping class="hibernate_example.helloworld.Message"/>
 
     </session-factory>
