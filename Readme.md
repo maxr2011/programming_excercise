@@ -13,3 +13,7 @@ Run /programming_excercise/src/main/java/exercise/Main/HibernateMain.java
 //1) Spring Hibernate Solution <br />
 Run /programming_excercise/src/main/java/exercise/Main/SpringHibernateMain.java
 -> Main method
+
+//1b) Spring Hibernate JPARepo Solution <br />
+Run /programming_excercise/src/main/java/exercise/Main/SpringHibernateJPARepoMain.java
+-> Main method
