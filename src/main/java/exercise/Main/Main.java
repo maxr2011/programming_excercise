@@ -50,7 +50,7 @@ class Main {
 		 * Als GIF, PDF exportieren
 		 */
 
-		// Tabelle leeren
+		// Tabelle löschen
 		JDBC.dropTable("company_table");
 
 		// CSV einlesen -> Companies
@@ -104,7 +104,7 @@ class Main {
 		 * Als PNG, PDF exportieren
 		 */
 
-		// Tabelle leeren
+		// Tabelle löschen
 		JDBC.dropTable("country_table");
 
 		// XLS einlesen -> Countries

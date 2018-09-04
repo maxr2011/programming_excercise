@@ -61,7 +61,7 @@ class SpringMain {
 
 		DBInterface<Company> companyDB = (CompanyDB) context.getBean("companyDB");
 
-		// Tabelle droppen
+		// Tabelle löschen
 		companyDB.dropTable();
 
 		// Daten in Datenbank schreiben
@@ -96,7 +96,7 @@ class SpringMain {
 
 		DBInterface<Country> countryDB = (CountryDB) context.getBean("countryDB");
 
-		// Tabelle droppen
+		// Tabelle löschen
 		countryDB.dropTable();
 
 		// Daten in die Tabelle schreiben

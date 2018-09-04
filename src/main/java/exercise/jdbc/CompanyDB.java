@@ -74,4 +74,14 @@ public class CompanyDB {
 		return cl;
 	}
 
+	// Tabelle leeren
+	public static void clearTable(String table) {
+		JDBC.clearTable(table);
+	}
+
+	// Tabelle löschen
+	public static void dropTable(String table) {
+		JDBC.dropTable(table);
+	}
+
 }
