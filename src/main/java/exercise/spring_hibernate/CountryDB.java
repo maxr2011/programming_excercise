@@ -1,6 +1,6 @@
 package exercise.spring_hibernate;
 
-import exercise.objects.Company;
+import exercise.objects.Country;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -9,32 +9,32 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public class CompanyDB {
+public class CountryDB {
 
 	@PersistenceContext
 	private EntityManager em;
 
 	@Transactional
-	public void addCompany(Company c) {
-		em.persist(c);
-	}
+	public void addCountry(Country c) {
+			em.persist(c);
+		}
 
 	@Transactional
-	public void writeDataToDatabase(List<Company> cl) {
-		for(Company c : cl) {
-			addCompany(c);
+	public void writeDataToDatabase(List<Country> cl) {
+		for(Country c : cl) {
+			addCountry(c);
 		}
 	}
 
 	@Transactional
-	public List<Company> readFromDatabase() {
-		String sql = "SELECT c FROM Company c";
+	public List<Country> readFromDatabase() {
+		String sql = "SELECT c FROM Country c";
 		return em.createQuery(sql).getResultList();
 	}
 
 	@Transactional
 	public void clearTable() {
-		em.createQuery("DELETE FROM Company c");
-	}
+			em.createQuery("DELETE FROM Country c");
+		}
 
 }

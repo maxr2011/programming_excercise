@@ -53,8 +53,12 @@ public class JDBC {
 
     // Methode um Tabelle zu leeren
     public static void clearTable(String ctable) {
-        String deleteSQL = "DELETE FROM "+ctable+";";
-        database.JDBC.minimalQuery(deleteSQL);
+        database.JDBC.minimalQuery("DELETE FROM "+ctable+";");
+    }
+
+    // Methode um Tabelle zu droppen
+    public static void dropTable(String dtable) {
+        database.JDBC.minimalQuery("DROP TABLE "+dtable+";");
     }
 
 }

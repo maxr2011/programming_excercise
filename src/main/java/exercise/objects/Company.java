@@ -1,5 +1,7 @@
 package exercise.objects;
 
+import exercise.interfaces.Element;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

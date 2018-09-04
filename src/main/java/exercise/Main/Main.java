@@ -51,7 +51,7 @@ class Main {
 		 */
 
 		// Tabelle leeren
-		JDBC.clearTable("company_table");
+		JDBC.dropTable("company_table");
 
 		// CSV einlesen -> Companies
 		List<Company> companiesCSV = ReadCSV.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
@@ -105,7 +105,7 @@ class Main {
 		 */
 
 		// Tabelle leeren
-		JDBC.clearTable("country_table");
+		JDBC.dropTable("country_table");
 
 		// XLS einlesen -> Countries
 		List<Country> countriesXLS = ReadXLS.readXLSFile(EXAMPLE_XLS_FILE);

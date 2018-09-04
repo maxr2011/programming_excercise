@@ -1,5 +1,6 @@
 package exercise.chart;
 
+import exercise.interfaces.Chart;
 import exercise.objects.Country;
 import exercise.output.GenerateOutputFiles;
 import org.jfree.chart.ChartFactory;

@@ -7,7 +7,9 @@ import spring_hibernate_config.JPAConfig;
 
 public class Main {
 
+	// Testdaten
 	public static void main(String[] args) {
+
 		ApplicationContext ap = new AnnotationConfigApplicationContext(JPAConfig.class);
 
 		CompanyDB c = (CompanyDB) ap.getBean("companyDB");

@@ -1,5 +1,6 @@
 package exercise.spring;
 
+import exercise.interfaces.DBInterface;
 import exercise.objects.Company;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -46,11 +47,9 @@ public class CompanyDB implements DBInterface<Company> {
 		jdbcTemplate.update("DELETE FROM " + table + ";");
 	}
 
-// --Commented out by Inspection START (03.09.18 08:56):
-//	//Löscht die Tabelle
-//	public void dropTable(){
-//		jdbcTemplate.update("DROP TABLE " + table + ";");
-//	}
-// --Commented out by Inspection STOP (03.09.18 08:56)
+	//Löscht die Tabelle
+	public void dropTable(){
+		jdbcTemplate.update("DROP TABLE " + table + ";");
+	}
 
 }

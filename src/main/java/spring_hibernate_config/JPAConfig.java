@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = "exercise.spring_hibernate")
+@ComponentScan(basePackages = {"exercise.spring_hibernate", "exercise.interfaces"})
 public class JPAConfig {
 
 	@Bean

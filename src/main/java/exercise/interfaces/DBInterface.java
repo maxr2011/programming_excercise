@@ -1,4 +1,4 @@
-package exercise.spring;
+package exercise.interfaces;
 
 import java.util.List;
 
@@ -12,5 +12,8 @@ public interface DBInterface<E> {
 
 	// Daten in die Datenbank schreiben
 	void writeDataToDatabase(List<E> l);
+
+	// Tabelle droppen
+	void dropTable();
 
 }

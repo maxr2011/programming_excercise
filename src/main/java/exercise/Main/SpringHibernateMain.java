@@ -7,21 +7,18 @@ import exercise.input.ReadXLS;
 import exercise.objects.Company;
 import exercise.objects.Country;
 import exercise.output.GenerateOutputFiles;
-import exercise.spring.CompanyDB;
-import exercise.spring.CountryDB;
-import exercise.interfaces.DBInterface;
+import exercise.spring_hibernate.CompanyDB;
+import exercise.spring_hibernate.CountryDB;
 import org.jfree.ui.RefineryUtilities;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import spring_config.ComponentConfig;
+import spring_hibernate_config.JPAConfig;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// Unchecked Cast wirft keine Warnung mehr
-@SuppressWarnings("unchecked")
-class SpringMain {
+public class SpringHibernateMain {
 
 	//Variablen
 	private static final int HEIGHT = 750;
@@ -39,11 +36,11 @@ class SpringMain {
 	//Pfad der PDF-Datei
 	private static final String PDF_FILE = "piechart-example.pdf";
 
-	// Mainmethode
+	//Mainmethode
 	public static void main(String[] args) {
 
-		// Application context
-		ApplicationContext context = new AnnotationConfigApplicationContext(ComponentConfig.class);
+		// Application Context
+		ApplicationContext ap = new AnnotationConfigApplicationContext(JPAConfig.class);
 
 		/* RINGCHART */
 		System.out.println("+++ RINGCHART +++");
@@ -59,10 +56,7 @@ class SpringMain {
 
 		List<Company> companies = ReadCSV.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
 
-		DBInterface<Company> companyDB = (CompanyDB) context.getBean("companyDB");
-
-		// Tabelle droppen
-		companyDB.dropTable();
+		CompanyDB companyDB = (CompanyDB) ap.getBean("companyDB");
 
 		// Daten in Datenbank schreiben
 		companyDB.writeDataToDatabase(companies);
@@ -77,6 +71,7 @@ class SpringMain {
 		demoa.pack();
 		RefineryUtilities.centerFrameOnScreen(demoa);
 		demoa.setVisible(true);
+
 
 		/* PIECHART */
 		System.out.println("+++ PIECHART +++");
@@ -94,17 +89,14 @@ class SpringMain {
 		// Variables
 		List<Country> countries = ReadXLS.readXLSFile(EXAMPLE_XLS_FILE);
 
-		DBInterface<Country> countryDB = (CountryDB) context.getBean("countryDB");
-
-		// Tabelle droppen
-		countryDB.dropTable();
+		CountryDB countryDB = (CountryDB) ap.getBean("countryDB");
 
 		// Daten in die Tabelle schreiben
 		countryDB.writeDataToDatabase(countries);
 
 		// Daten aus Tabelle auslesen und in Liste speichern (mit Cast zu List<Country)
 		List<Country> countriesDB = countryDB.readFromDatabase();
-								// Würde die Liste sortieren (brauchen wir hier jedoch nicht)
+		// Würde die Liste sortieren (brauchen wir hier jedoch nicht)
 								/*
 								.stream()
 							 	.sorted(Comparator.comparing(Country::getWeight).reversed())
@@ -120,8 +112,9 @@ class SpringMain {
 		// 2 PDFs zusammenfügen
 		GenerateOutputFiles.mergePDF(PDF_FILE, "ringchart-example.pdf", "piechart-ringchart-example.pdf");
 
-		// Applicaton Context schließen
-		((AnnotationConfigApplicationContext) context).close();
+
+		// Application Context schließen
+		((AnnotationConfigApplicationContext) ap).close();
 
 	}
 
