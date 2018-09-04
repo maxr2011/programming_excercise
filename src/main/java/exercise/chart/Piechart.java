@@ -7,6 +7,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardPieToolTipGenerator;
 import org.jfree.chart.plot.PiePlot;
@@ -19,6 +20,7 @@ import org.jfree.util.UnitType;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.text.AttributedString;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,9 +86,6 @@ public class Piechart extends ApplicationFrame implements Chart {
 		plot.setShadowXOffset(0);
 		plot.setShadowYOffset(0);
 
-		// Entfernt die Default Labels
-		plot.setLabelGenerator(null);
-
 		// Sektionen färben
 		ArrayList<Color> colorlist = new ArrayList<>();
 		colorlist.add(new Color(0x7ED096));
@@ -101,11 +100,10 @@ public class Piechart extends ApplicationFrame implements Chart {
 
 		// Einfache Labels
 		plot.setSimpleLabels(true);
-		/* TODO
-		Labels überspringen
-		(nur Label 1-4 anzeigen)
-		 */
-		plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{2}"));
+
+		// Label beschriften und entsprechend anpassen (Welch Werte werden angezeigt? Runden usw.)
+		PieSectionLabelGenerator labelGenerator = new MyPieSectionLabelGenerator();
+		plot.setLabelGenerator(labelGenerator);
 
 		plot.setLabelBackgroundPaint(null);
 		plot.setLabelOutlinePaint(null);
@@ -127,7 +125,8 @@ public class Piechart extends ApplicationFrame implements Chart {
 
 		}
 
-		plot.setToolTipGenerator(new StandardPieToolTipGenerator("{0} = {2}", NumberFormat.getNumberInstance(), NumberFormat.getPercentInstance()));
+		plot.setToolTipGenerator(new StandardPieToolTipGenerator("{0} = {2}", NumberFormat.getNumberInstance(),
+				NumberFormat.getPercentInstance()));
 
 		// Sektion hervorheben
 		// plot.setExplodePercent("Deutschland", 0.3);
@@ -147,9 +146,8 @@ public class Piechart extends ApplicationFrame implements Chart {
 
 		chart.getLegend().setItemFont(new Font("Arial", Font.PLAIN, 15));
 
-		/* TODO
-		Prozentzahlen in der Legende
-		 */
+		// Prozentzahlen in der Legende
+		plot.setLegendLabelGenerator(new StandardPieSectionLabelGenerator("{0} {2}"));
 
 		// chart.addSubtitle(new TextTitle("test"));
 
@@ -172,4 +170,29 @@ public class Piechart extends ApplicationFrame implements Chart {
 		return new ChartPanel(chart);
 	}
 
+	// Methoden überschreiben
+	private static class MyPieSectionLabelGenerator implements PieSectionLabelGenerator {
+
+		@Override
+		public String generateSectionLabel(PieDataset dataset, Comparable key) {
+			final Number value = dataset.getValue(key);
+			if (value.doubleValue() > 5) {
+				if(value.doubleValue() > 35) {
+					// normal runden (in dem Fall aufrunden)
+					return String.valueOf(Math.round(value.doubleValue())) + " %";
+				} else {
+					// abrunden
+					return String.valueOf(Math.floor((value.doubleValue()*10)) /10) + " %";
+				}
+			}
+
+			return null;
+		}
+
+		@Override
+		public AttributedString generateAttributedSectionLabel(PieDataset dataset, Comparable key) {
+			return null;
+		}
+
+	}
 }

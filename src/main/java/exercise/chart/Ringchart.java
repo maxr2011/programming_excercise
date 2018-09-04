@@ -7,6 +7,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.RingPlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
@@ -25,7 +26,7 @@ public class Ringchart extends ApplicationFrame implements Chart {
 	//Variablen
 	private static List<Company> companies;
 
-	private static final int WIDTH = 600;
+	private static final int WIDTH = 650;
 	private static final int HEIGHT = 400;
 
 	//GIF file name
@@ -127,9 +128,9 @@ public class Ringchart extends ApplicationFrame implements Chart {
 		chart.getLegend().setPosition(RectangleEdge.RIGHT);
 		chart.getLegend().setFrame(BlockBorder.NONE);
 
-		/* TODO
-		Prozentzahlen in der Legende
-		 */
+		// Prozentzahlen in der Legende
+		plot.setLegendLabelGenerator(new StandardPieSectionLabelGenerator("{0} {2}"));
+
 
 		return chart;
 
