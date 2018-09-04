@@ -32,6 +32,9 @@ public class Ringchart extends ApplicationFrame implements Chart {
 	private static final String GIF_FILE = "ringchart-example.gif";
 
 	//PDF file name
+	private static final String SVG_FILE = "ringchart-example.svg";
+
+	//PDF file name
 	private static final String PDF_FILE = "ringchart-example.pdf";
 
 	public Ringchart(String title, List<Company> cl) {
@@ -124,6 +127,10 @@ public class Ringchart extends ApplicationFrame implements Chart {
 		chart.getLegend().setPosition(RectangleEdge.RIGHT);
 		chart.getLegend().setFrame(BlockBorder.NONE);
 
+		/* TODO
+		Prozentzahlen in der Legende
+		 */
+
 		return chart;
 
 	}
@@ -134,6 +141,9 @@ public class Ringchart extends ApplicationFrame implements Chart {
 
 		// Als GIF exportieren
 		GenerateOutputFiles.exportGIF(new File(GIF_FILE), chart, WIDTH, HEIGHT);
+
+		// Als SVG exportieren
+		GenerateOutputFiles.exportSVG(new File(SVG_FILE), chart, WIDTH, HEIGHT);
 
 		// Als PDF exportieren
 		GenerateOutputFiles.exportPDF(new File(PDF_FILE), chart, WIDTH, HEIGHT);

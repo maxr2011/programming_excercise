@@ -48,7 +48,7 @@ class SpringMain {
 		System.out.println("+++ RINGCHART +++");
 		System.out.println();
 
-		/* TODO
+		/* DONE
 		 * CSV einlesen
 		 * Datenbank schreiben
 		 * Datenbank lesen
@@ -84,7 +84,7 @@ class SpringMain {
 		System.out.println("+++ PIECHART +++");
 		System.out.println();
 
-		/* TODO
+		/* DONE
 		 * XLS einlesen
 		 * Datenbank schreiben
 		 * Datenbank lesen

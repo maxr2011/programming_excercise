@@ -7,10 +7,13 @@ import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.apache.batik.dom.GenericDOMImplementation;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.w3c.dom.DOMImplementation;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -51,6 +54,42 @@ public class GenerateOutputFiles {
 	/* TODO
 	Exportieren als SVG Datei
 	 */
+
+	// Exportieren als SVG Datei
+	public static void exportSVG(File svgFile, JFreeChart chart, int x, int y) {
+
+		// Get a DOMImplementation and create an XML document
+		DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+		org.w3c.dom.Document document = domImpl.createDocument(null, "svg", null);
+
+		// Create an instance of the SVG Generator
+		SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
+
+		// draw the chart in the SVG generator
+		chart.draw(svgGenerator, new java.awt.Rectangle(x, y));
+
+		// Write svg file
+		OutputStream outputStream = null;
+
+		try {
+			outputStream = new FileOutputStream(svgFile);
+			Writer out = new OutputStreamWriter(outputStream, "UTF-8");
+			svgGenerator.stream(out, true /* use css */);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if(outputStream != null) {
+				try {
+					outputStream.flush();
+					outputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
+
 
 	// Methode zum Exportieren als PDF
 	public static void exportPDF(File name, JFreeChart chart, int x, int y) {

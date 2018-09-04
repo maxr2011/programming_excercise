@@ -36,6 +36,9 @@ public class Piechart extends ApplicationFrame implements Chart {
 	//Pfad der PNG-Datei
 	private static final String PNG_FILE = "piechart-example.png";
 
+	//Pfad der SVG-Datei
+	private static final String SVG_FILE = "piechart-example.svg";
+
 	//Pfad der PDF-Datei
 	private static final String PDF_FILE = "piechart-example.pdf";
 
@@ -145,7 +148,7 @@ public class Piechart extends ApplicationFrame implements Chart {
 		chart.getLegend().setItemFont(new Font("Arial", Font.PLAIN, 15));
 
 		/* TODO
-		Prozentzahlen in der Legende (auch im Ringchart)
+		Prozentzahlen in der Legende
 		 */
 
 		// chart.addSubtitle(new TextTitle("test"));
@@ -159,6 +162,9 @@ public class Piechart extends ApplicationFrame implements Chart {
 
 		// PNG export
 		GenerateOutputFiles.exportPNG(new File(PNG_FILE), chart, WIDTH, HEIGHT);
+
+		// SVG export
+		GenerateOutputFiles.exportSVG(new File(SVG_FILE), chart, WIDTH, HEIGHT);
 
 		// PDF export
 		GenerateOutputFiles.exportPDF(new File(PDF_FILE), chart, WIDTH, HEIGHT);
