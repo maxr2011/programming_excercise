@@ -13,6 +13,7 @@ public class Country implements Element {
 
 	@Id
 	@GeneratedValue
+	@SuppressWarnings("unused")
 	private Long id;
 
 	private String name;

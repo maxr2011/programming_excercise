@@ -10,7 +10,6 @@ import exercise.output.GenerateOutputFiles;
 import exercise.spring_hibernate.CompanyDB;
 import exercise.spring_hibernate.CountryDB;
 import org.jfree.ui.RefineryUtilities;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring_hibernate_config.JPAConfig;
 
@@ -18,7 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SpringHibernateMain {
+class SpringHibernateMain {
 
 	//Variablen
 	private static final int HEIGHT = 750;
@@ -40,7 +39,7 @@ public class SpringHibernateMain {
 	public static void main(String[] args) {
 
 		// Application Context
-		ApplicationContext ap = new AnnotationConfigApplicationContext(JPAConfig.class);
+		AnnotationConfigApplicationContext ap = new AnnotationConfigApplicationContext(JPAConfig.class);
 
 		/* RINGCHART */
 		System.out.println("+++ RINGCHART +++");
@@ -62,9 +61,11 @@ public class SpringHibernateMain {
 		companyDB.writeDataToDatabase(companies);
 
 		// Daten aus der Datenbank auslesen
-		List<Company> companiesDB = companyDB.readFromDatabase().stream()
-											 .sorted(Comparator.comparing(Company::getWeighting).reversed())
-											 .collect(Collectors.toList());
+		List<Company> companiesDB = companyDB.readFromDatabase();
+
+		companiesDB = companiesDB.stream()
+								 .sorted(Comparator.comparing(Company::getWeighting).reversed())
+								 .collect(Collectors.toList());
 
 		// Ringchart erstellen
 		Ringchart demoa = new Ringchart("Companies", companiesDB);
@@ -114,7 +115,7 @@ public class SpringHibernateMain {
 
 
 		// Application Context schließen
-		((AnnotationConfigApplicationContext) ap).close();
+		ap.close();
 
 	}
 

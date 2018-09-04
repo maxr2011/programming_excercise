@@ -28,13 +28,7 @@ public class CompanyDB {
 
 	@Transactional
 	public List<Company> readFromDatabase() {
-		String sql = "SELECT c FROM Company c";
-		return em.createQuery(sql).getResultList();
-	}
-
-	@Transactional
-	public void clearTable() {
-		em.createQuery("DELETE FROM Company c");
+		return em.createQuery("SELECT c FROM Company c", Company.class).getResultList();
 	}
 
 }

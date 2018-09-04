@@ -13,6 +13,7 @@ public class Company implements Element {
 
 	@Id
 	@GeneratedValue
+	@SuppressWarnings("unused")
 	private Long id;
 
 	private String date, security;

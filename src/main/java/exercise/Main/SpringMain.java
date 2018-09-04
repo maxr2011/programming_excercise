@@ -4,14 +4,13 @@ import exercise.chart.Piechart;
 import exercise.chart.Ringchart;
 import exercise.input.ReadCSV;
 import exercise.input.ReadXLS;
+import exercise.interfaces.DBInterface;
 import exercise.objects.Company;
 import exercise.objects.Country;
 import exercise.output.GenerateOutputFiles;
 import exercise.spring.CompanyDB;
 import exercise.spring.CountryDB;
-import exercise.interfaces.DBInterface;
 import org.jfree.ui.RefineryUtilities;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring_config.ComponentConfig;
 
@@ -43,7 +42,7 @@ class SpringMain {
 	public static void main(String[] args) {
 
 		// Application context
-		ApplicationContext context = new AnnotationConfigApplicationContext(ComponentConfig.class);
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ComponentConfig.class);
 
 		/* RINGCHART */
 		System.out.println("+++ RINGCHART +++");
@@ -60,6 +59,9 @@ class SpringMain {
 		List<Company> companies = ReadCSV.readCsvFile(SAMPLE_CSV_FILE_PATH, FILE_HEADER_MAPPING);
 
 		DBInterface<Company> companyDB = (CompanyDB) context.getBean("companyDB");
+
+		// Tabelle leeren
+		companyDB.clearTable();
 
 		// Tabelle löschen
 		companyDB.dropTable();
@@ -96,6 +98,9 @@ class SpringMain {
 
 		DBInterface<Country> countryDB = (CountryDB) context.getBean("countryDB");
 
+		// Tabelle leeren
+		countryDB.clearTable();
+
 		// Tabelle löschen
 		countryDB.dropTable();
 
@@ -121,7 +126,7 @@ class SpringMain {
 		GenerateOutputFiles.mergePDF(PDF_FILE, "ringchart-example.pdf", "piechart-ringchart-example.pdf");
 
 		// Applicaton Context schließen
-		((AnnotationConfigApplicationContext) context).close();
+		context.close();
 
 	}
 

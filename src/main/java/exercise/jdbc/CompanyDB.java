@@ -74,14 +74,18 @@ public class CompanyDB {
 		return cl;
 	}
 
-	// Tabelle leeren
-	public static void clearTable(String table) {
-		JDBC.clearTable(table);
-	}
+// --Commented out by Inspection START (04.09.18 11:06):
+//	// Tabelle leeren
+//	public static void clearTable(String table) {
+//		JDBC.clearTable(table);
+//	}
+// --Commented out by Inspection STOP (04.09.18 11:06)
 
-	// Tabelle löschen
-	public static void dropTable(String table) {
-		JDBC.dropTable(table);
-	}
+// --Commented out by Inspection START (04.09.18 11:06):
+//	// Tabelle löschen
+//	public static void dropTable(String table) {
+//		JDBC.dropTable(table);
+//	}
+// --Commented out by Inspection STOP (04.09.18 11:06)
 
 }

@@ -13,7 +13,7 @@ public interface DBInterface<E> {
 	// Daten in die Datenbank schreiben
 	void writeDataToDatabase(List<E> l);
 
-	// Tabelle droppen
+	// Tabelle löschen
 	void dropTable();
 
 }

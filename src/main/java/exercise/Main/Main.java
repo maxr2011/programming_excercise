@@ -50,6 +50,9 @@ class Main {
 		 * Als GIF, PDF exportieren
 		 */
 
+		// Tabelle leeren
+		JDBC.clearTable("company_table");
+
 		// Tabelle löschen
 		JDBC.dropTable("company_table");
 
@@ -103,6 +106,9 @@ class Main {
 		 * Chart erstellen
 		 * Als PNG, PDF exportieren
 		 */
+
+		// Tabelle leeren
+		JDBC.clearTable("country_table");
 
 		// Tabelle löschen
 		JDBC.dropTable("country_table");

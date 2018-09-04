@@ -5,19 +5,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-public class Message {
+class Message {
 
 	@Id
 	@GeneratedValue
+	@SuppressWarnings("unused")
 	private Long id;
 
 	private String text;
 
 	private String recipient;
 
-	public Long getId() {
-		return id;
-	}
+// --Commented out by Inspection START (04.09.18 11:03):
+//	public Long getId() {
+//		return id;
+//	}
+// --Commented out by Inspection STOP (04.09.18 11:03)
 
 	public String getRecipient() {
 		return recipient;

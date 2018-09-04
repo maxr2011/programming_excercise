@@ -8,7 +8,9 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
+
 @Repository
+@SuppressWarnings("WeakerAccess")
 public class CountryDB {
 
 	@PersistenceContext
@@ -28,13 +30,7 @@ public class CountryDB {
 
 	@Transactional
 	public List<Country> readFromDatabase() {
-		String sql = "SELECT c FROM Country c";
-		return em.createQuery(sql).getResultList();
+		return em.createQuery("SELECT c FROM Country c", Country.class).getResultList();
 	}
-
-	@Transactional
-	public void clearTable() {
-			em.createQuery("DELETE FROM Country c");
-		}
 
 }

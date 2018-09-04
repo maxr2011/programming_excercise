@@ -1,6 +1,6 @@
 package hibernate_example.helloworld;
 
-public class Main {
+class Main {
 
 	public static void main(String[] args) {
 		Message msg = new Message();
