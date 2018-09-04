@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public class GenerateOutputFiles {
 
@@ -51,10 +52,6 @@ public class GenerateOutputFiles {
 
 	}
 
-	/* TODO
-	Exportieren als SVG Datei
-	 */
-
 	// Exportieren als SVG Datei
 	public static void exportSVG(File svgFile, JFreeChart chart, int x, int y) {
 
@@ -73,7 +70,7 @@ public class GenerateOutputFiles {
 
 		try {
 			outputStream = new FileOutputStream(svgFile);
-			Writer out = new OutputStreamWriter(outputStream, "UTF-8");
+			Writer out = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
 			svgGenerator.stream(out, true /* use css */);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -89,7 +86,6 @@ public class GenerateOutputFiles {
 		}
 
 	}
-
 
 	// Methode zum Exportieren als PDF
 	public static void exportPDF(File name, JFreeChart chart, int x, int y) {
