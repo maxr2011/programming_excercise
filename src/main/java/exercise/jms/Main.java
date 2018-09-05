@@ -10,7 +10,7 @@ public class Main {
 		AnnotationConfigApplicationContext ap = new AnnotationConfigApplicationContext(JMSConfig.class);
 		Receiver rc = (Receiver) ap.getBean("receiver");
 
-		System.out.println(rc.isSent());
+		System.out.println(rc.receiveMessage());
 	}
 
 }
