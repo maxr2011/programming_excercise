@@ -29,7 +29,7 @@ Run /programming_excercise/src/main/java/exercise/Main/SpringHibernateJPARepoMai
 -> Main method
 
 <br /> <br />
-Database Connectivity <br />
+// Database Connectivity <br />
 org.postgresql.Driver <br />
 jdbc:postgresql://localhost:5432/exercise <br />
 username: mare <br />
