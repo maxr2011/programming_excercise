@@ -24,6 +24,6 @@ Run /programming_excercise/src/main/java/streams/Main.java
 
 // JMS Excercise <br />
 Run /programming_excercise/src/main/java/exercise/jms/Main.java
--> Main method
+-> Main method <br />
 Run /programming_excercise/src/main/java/exercise/Main/SpringHibernateJPARepoMain.java
 -> Main method
