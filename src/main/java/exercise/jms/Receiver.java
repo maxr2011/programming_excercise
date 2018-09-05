@@ -22,7 +22,12 @@ public class Receiver {
 		try {
 			TextMessage tm = (TextMessage) jmsOperations.receive();
 			String text = tm.getText();
+
 			System.out.println(text);
+			if(text.equals("Data written to country_table")) {
+				System.out.println("some code");
+			}
+
 			return text;
 		} catch (JMSException jme) {
 			jme.printStackTrace();
