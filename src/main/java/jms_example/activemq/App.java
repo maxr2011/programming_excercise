@@ -16,45 +16,45 @@ import javax.jms.TextMessage;
 /**
  * Hello world!
  */
-public class App {
+class App {
 
 	public static void main(String[] args) throws Exception {
-		thread(new HelloWorldProducer(), false);
-		thread(new HelloWorldProducer(), false);
-		thread(new HelloWorldConsumer(), false);
+		thread(new HelloWorldProducer());
+		thread(new HelloWorldProducer());
+		thread(new HelloWorldConsumer());
 		Thread.sleep(1000);
-		thread(new HelloWorldConsumer(), false);
-		thread(new HelloWorldProducer(), false);
-		thread(new HelloWorldConsumer(), false);
-		thread(new HelloWorldProducer(), false);
+		thread(new HelloWorldConsumer());
+		thread(new HelloWorldProducer());
+		thread(new HelloWorldConsumer());
+		thread(new HelloWorldProducer());
 		Thread.sleep(1000);
-		thread(new HelloWorldConsumer(), false);
-		thread(new HelloWorldProducer(), false);
-		thread(new HelloWorldConsumer(), false);
-		thread(new HelloWorldConsumer(), false);
-		thread(new HelloWorldProducer(), false);
-		thread(new HelloWorldProducer(), false);
+		thread(new HelloWorldConsumer());
+		thread(new HelloWorldProducer());
+		thread(new HelloWorldConsumer());
+		thread(new HelloWorldConsumer());
+		thread(new HelloWorldProducer());
+		thread(new HelloWorldProducer());
 		Thread.sleep(1000);
-		thread(new HelloWorldProducer(), false);
-		thread(new HelloWorldConsumer(), false);
-		thread(new HelloWorldConsumer(), false);
-		thread(new HelloWorldProducer(), false);
-		thread(new HelloWorldConsumer(), false);
-		thread(new HelloWorldProducer(), false);
-		thread(new HelloWorldConsumer(), false);
-		thread(new HelloWorldProducer(), false);
-		thread(new HelloWorldConsumer(), false);
-		thread(new HelloWorldConsumer(), false);
-		thread(new HelloWorldProducer(), false);
+		thread(new HelloWorldProducer());
+		thread(new HelloWorldConsumer());
+		thread(new HelloWorldConsumer());
+		thread(new HelloWorldProducer());
+		thread(new HelloWorldConsumer());
+		thread(new HelloWorldProducer());
+		thread(new HelloWorldConsumer());
+		thread(new HelloWorldProducer());
+		thread(new HelloWorldConsumer());
+		thread(new HelloWorldConsumer());
+		thread(new HelloWorldProducer());
 	}
 
-	public static void thread(Runnable runnable, boolean daemon) {
+	private static void thread(Runnable runnable) {
 		Thread brokerThread = new Thread(runnable);
-		brokerThread.setDaemon(daemon);
+		brokerThread.setDaemon(false);
 		brokerThread.start();
 	}
 
-	public static class HelloWorldProducer implements Runnable {
+	static class HelloWorldProducer implements Runnable {
 		public void run() {
 			try {
 				// Create a ConnectionFactory
@@ -93,7 +93,7 @@ public class App {
 		}
 	}
 
-	public static class HelloWorldConsumer implements Runnable, ExceptionListener {
+	static class HelloWorldConsumer implements Runnable, ExceptionListener {
 		public void run() {
 			try {
 

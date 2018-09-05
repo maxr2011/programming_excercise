@@ -1,14 +1,15 @@
 package exercise.jms;
 
-import jms_config.JMSConfig;
+import exercise.jms.Receiver.Receiver;
+import jms_config.JMSConfigReceiver;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 @SuppressWarnings("unused")
-public class Main {
+class Main {
 
 	// Mainmethode für den Receiver
 	public static void main(String[] args) {
-		AnnotationConfigApplicationContext ap = new AnnotationConfigApplicationContext(JMSConfig.class);
+		AnnotationConfigApplicationContext ap = new AnnotationConfigApplicationContext(JMSConfigReceiver.class);
 		Receiver rc = (Receiver) ap.getBean("receiver");
 	}
 

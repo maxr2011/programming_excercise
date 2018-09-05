@@ -4,7 +4,7 @@ import jms_example.helloworld.ExampleMessageReceiver;
 
 import javax.jms.JMSException;
 
-public class Main {
+class Main {
 
 	public static void main(String[] args) throws JMSException {
 

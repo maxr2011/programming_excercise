@@ -2,7 +2,7 @@ package jms_example.helloworld;
 
 import javax.jms.*;
 
-public class ExampleMessageSender {
+class ExampleMessageSender {
 
 	private final MessageProducer producer;
 	private final Session session;

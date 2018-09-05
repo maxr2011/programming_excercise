@@ -1,4 +1,4 @@
-package exercise.jms;
+package exercise.jms.Sender;
 
 import org.springframework.jms.core.JmsOperations;
 import org.springframework.jms.core.JmsTemplate;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Sender {
 
-	private JmsOperations jmsOperations;
+	private final JmsOperations jmsOperations;
 
 	public Sender(JmsTemplate jmsTemplate) {
 		this.jmsOperations = jmsTemplate;

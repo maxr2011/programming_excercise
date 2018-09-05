@@ -1,6 +1,6 @@
 package jms_example.helloworld;
 
-public class Main {
+class Main {
 
 	public static void main (String[] args) throws Exception {
 		final ExampleMessageSender sender = new ExampleMessageSender();

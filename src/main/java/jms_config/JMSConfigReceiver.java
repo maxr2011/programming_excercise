@@ -14,8 +14,8 @@ import javax.jms.Destination;
 
 @Configuration
 @EnableJms
-@ComponentScan(basePackages = {"exercise.jms"})
-public class JMSConfig {
+@ComponentScan(basePackages = {"exercise.jms.Receiver"})
+public class JMSConfigReceiver {
 
 	@Bean
 	Destination destination() {
