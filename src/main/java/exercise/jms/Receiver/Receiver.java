@@ -1,16 +1,14 @@
 package exercise.jms.Receiver;
 
 import exercise.chart.Piechart;
-import exercise.jpa_repo_services.CountryService;
+import exercise.jdbc.CountryDB;
 import exercise.objects.Country;
 import exercise.output.GenerateOutputFiles;
 import org.jfree.ui.RefineryUtilities;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsOperations;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
-import spring_hibernate_config.JPARepoConfig;
 
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
@@ -37,17 +35,14 @@ public class Receiver {
 				System.out.println("some code");
 
 				//Variablen
-				AnnotationConfigApplicationContext ap = new AnnotationConfigApplicationContext(JPARepoConfig.class);
-
 				int HEIGHT = 750;
 				int WIDTH = 537;
 
 				String PDF_FILE = "piechart-example.pdf";
 
-				CountryService countryService = (CountryService) ap.getBean("countryService");
+				// Daten aus Datenbank auslesen (JDBC in diesem Fall)
+				List<Country> countriesDB = (new CountryDB()).readFromDatabase();
 
-				// Daten aus Tabelle auslesen und in Liste speichern (mit Cast zu List<Country)
-				List<Country> countriesDB = countryService.readFromDatabase();
 				// Würde die Liste sortieren (brauchen wir hier jedoch nicht)
 								/*
 								.stream()
@@ -60,6 +55,8 @@ public class Receiver {
 				demob.setSize(WIDTH, HEIGHT);
 				RefineryUtilities.centerFrameOnScreen(demob);
 				demob.setVisible(true);
+
+				// Ringchart analog genauso wie in der anderen Main Methode
 
 				// 2 PDFs zusammenfügen
 				GenerateOutputFiles.mergePDF(PDF_FILE, "ringchart-example.pdf", "piechart-ringchart-example.pdf");
