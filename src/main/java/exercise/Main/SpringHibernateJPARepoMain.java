@@ -4,11 +4,13 @@ import exercise.chart.Piechart;
 import exercise.chart.Ringchart;
 import exercise.input.ReadCSV;
 import exercise.input.ReadXLS;
+import exercise.jms.Sender;
 import exercise.jpa_repo_services.CompanyService;
 import exercise.jpa_repo_services.CountryService;
 import exercise.objects.Company;
 import exercise.objects.Country;
 import exercise.output.GenerateOutputFiles;
+import jms_config.JMSConfig;
 import org.jfree.ui.RefineryUtilities;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import spring_hibernate_config.JPARepoConfig;
@@ -61,6 +63,14 @@ class SpringHibernateJPARepoMain {
 		// Daten in die Datenbank schreiben
 		cs.writeDataToDatabase(companies);
 
+		// JMS Context
+		AnnotationConfigApplicationContext jms_ap = new AnnotationConfigApplicationContext(JMSConfig.class);
+
+		// JMS Nachricht verschicken
+		Sender sender1 = (Sender) jms_ap.getBean("sender");
+
+		sender1.sendMessage("Data written to company_table");
+
 		// Daten aus der Datenbank lesen
 		List<Company> companiesDB = cs.readFromDatabase().stream()
 											 .sorted(Comparator.comparing(Company::getWeighting).reversed())
@@ -92,6 +102,11 @@ class SpringHibernateJPARepoMain {
 
 		// Daten in Datenbank schreiben
 		countryService.writeDataToDatabase(countries);
+
+		// JMS Nachricht verschicken
+		Sender sender2 = (Sender) jms_ap.getBean("sender");
+
+		sender2.sendMessage("Data written to country_table");
 
 		// Daten aus Tabelle auslesen und in Liste speichern (mit Cast zu List<Country)
 		List<Country> countriesDB = countryService.readFromDatabase();
