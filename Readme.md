@@ -23,7 +23,7 @@ Run /programming_excercise/src/main/java/streams/Main.java
 -> Main method
 
 // JMS Excercise <br />
-Run /programming_excercise/src/main/java/jms_example/Receiver.java
+Run /programming_excercise/src/main/java/exercise/jms/Main.java
 -> Main method
-Run /programming_excercise/src/main/java/jms_example/Sender.java
+Run /programming_excercise/src/main/java/exercise/Main/SpringHibernateJPARepoMain.java
 -> Main method
